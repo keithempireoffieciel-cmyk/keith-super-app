@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KEITH - V11 Installable</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0f14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KEITH">
+<link rel="apple-touch-icon" href="https://via.placeholder.com/512/00e676/000000?text=K">
+<link rel="icon" href="https://via.placeholder.com/512/00e676/000000?text=K">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#0b0f14;color:#fff;overflow:hidden;height:100dvh}
+button{cursor:pointer;border:none;outline:none}
+input,select{outline:none}
+#authScreen{position:fixed;inset:0;background:linear-gradient(180deg,#0b0f14,#111827);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.logo{font-size:52px;font-weight:900}.logo span{color:#00e676}
+.sub{color:#9ca3af;margin:8px 0 22px;text-align:center;font-size:14px;line-height:1.4}
+.card{background:#1a222e;border:1px solid #2a3648;border-radius:18px;padding:18px;width:100%;max-width:380px}
+.card h3{margin-bottom:12px}
+.field{width:100%;background:#0f141b;border:1px solid #2a3648;border-radius:12px;padding:13px 14px;color:#fff;margin-bottom:10px;font-size:15px}
+.field::placeholder{color:#6b7280}
+.btn{width:100%;padding:14px;border-radius:12px;font-weight:800;font-size:15px;margin-top:4px}
+.btn-green{background:#00e676;color:#000}
+.btn-ghost{background:#262f3d;color:#fff;margin-top:10px}
+.btn-blue{background:#2563eb;color:#fff}
+.small{font-size:12px;color:#9ca3af;text-align:center;margin-top:12px;line-height:1.5}
+.error{background:#3f1d1d;border:1px solid #ef4444;color:#fca5a5;padding:10px;border-radius:10px;font-size:13px;margin-bottom:10px;display:none}
+#app{height:100dvh;display:none;flex-direction:column}
+.topbar{background:#111827;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1f2937}
+.topbar b{font-size:20px}.topbar b i{color:#00e676;font-style:normal}
+.pill{background:#1f2937;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;display:flex;gap:6px;align-items:center}
+.coin{color:#facc15}
+.tabs{display:flex;background:#111827;border-bottom:1px solid #1f2937}
+.tab{flex:1;padding:10px 2px;text-align:center;font-size:12px;font-weight:700;color:#9ca3af}
+.tab.active{color:#fff;border-bottom:3px solid #00e676}
+.content{flex:1;overflow-y:auto;padding-bottom:90px}
+.page{display:none;padding:12px}.page.active{display:block}
+.search{background:#1f2937;border-radius:999px;padding:10px 14px;display:flex;gap:8px;margin-bottom:12px}
+.search input{background:none;border:none;color:#fff;width:100%;font-size:14px}
+.userRow{background:#161e29;border:1px solid #1f2937;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00e676,#2563eb);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;flex-shrink:0}
+.videoCard{background:#161e29;border-radius:18px;overflow:hidden;margin-bottom:14px;border:1px solid #1f2937}
+.videoCard img{width:100%;height:280px;object-fit:cover;display:block;background:#000}
+.videoInfo{padding:12px}
+.actions{display:flex;gap:8px;margin-top:10px}
+.act{flex:1;background:#1f2937;color:#fff;padding:10px;border-radius:10px;font-weight:700;font-size:13px}
+.postCard{background:#161e29;border:1px solid #1f2937;border-radius:18px;padding:12px;margin-bottom:12px}
+.postCard img{width:100%;border-radius:12px;margin-top:10px;max-height:360px;object-fit:cover}
+.coinCard{background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #facc15;border-radius:18px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.coinCard h2{color:#facc15}
+.buyBtn{background:#facc15;color:#000;padding:10px 16px;border-radius:999px;font-weight:800}
+.adminBox{background:#1f2937;border:1px solid #ef4444;border-radius:16px;padding:14px;margin-top:12px}
+.req{background:#0f141b;border:1px solid #334155;border-radius:12px;padding:12px;margin-top:10px}
+.bottomNav{position:fixed;bottom:0;left:0;right:0;background:#111827;border-top:1px solid #1f2937;display:flex;z-index:50}
+.navBtn{flex:1;padding:10px 2px;text-align:center;font-size:10px;color:#9ca3af;font-weight:700}
+.navBtn.active{color:#00e676}
+.navBtn div{font-size:20px}
+.chatBox{background:#0f141b;border-radius:16px;padding:10px;margin-top:10px;min-height:180px}
+.msg{padding:8px 12px;border-radius:14px;margin-bottom:8px;max-width:90%;font-size:14px;line-height:1.4}
+.msg.me{background:#00e676;color:#000;margin-left:auto}
+.msg.other{background:#1f2937}
+.msg audio{width:100%;margin-top:6px;height:36px}
+.inputRow{display:flex;gap:6px;margin-top:8px;align-items:center}
+.inputRow input{flex:1;background:#1f2937;border:none;padding:12px;border-radius:999px;color:#fff}
+.sendBtn{background:#00e676;color:#000;width:48px;height:48px;border-radius:50%;font-weight:900;font-size:18px;flex-shrink:0}
+.micBtn{background:#1f2937;color:#fff;width:48px;height:48px;border-radius:50%;font-size:20px;flex-shrink:0}
+.micBtn.rec{background:#ef4444;animation:pulse 1s infinite}
+.callBtn{background:#2563eb;color:#fff;width:44px;height:44px;border-radius:50%;font-size:18px;flex-shrink:0}
+.videoBtn{background:#7c3aed;color:#fff;width:44px;height:44px;border-radius:50%;font-size:18px;flex-shrink:0}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+.addBox{background:#123324;border:1px solid #00e676;border-radius:16px;padding:14px;margin-bottom:12px}
+.statusRow{display:flex;gap:12px;overflow-x:auto;padding:6px 2px 12px;scrollbar-width:none}
+.statusItem{flex-shrink:0;width:68px;text-align:center}
+.statusCircle{width:62px;height:62px;border-radius:50%;border:3px solid #00e676;padding:2px;background:#111827;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.statusCircle img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.statusCircle.me{border-color:#9ca3af}
+.statusCircle .plus{position:absolute;bottom:0;right:0;background:#00e676;color:#000;width:20px;height:20px;border-radius:50%;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:14px}
+.statusName{font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.statusViewer{position:fixed;inset:0;background:#000;z-index:200;display:none;flex-direction:column}
+.statusViewer img{width:100%;flex:1;object-fit:contain;background:#000}
+.viewerRow{background:#161e29;border-radius:12px;padding:10px;display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.langBtn{flex:1;padding:10px 4px;border-radius:10px;background:#1f2937;color:#fff;font-weight:700;font-size:12px}
+.langBtn.active{background:#00e676;color:#000}
+.recBox{background:#3f1d1d;border:1px solid #ef4444;border-radius:12px;padding:10px;text-align:center;margin-top:8px;display:none;font-weight:700}
+.callScreen{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
+.callTop{padding:14px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.6);position:absolute;top:0;left:0;right:0;z-index:10}
+.callBottom{position:absolute;bottom:0;left:0;right:0;padding:18px;background:linear-gradient(0deg,rgba(0,0,0,0.8),transparent);display:flex;flex-direction:column;align-items:center;gap:12px;z-index:10}
+.callBtnRow{display:flex;gap:14px}
+.callAction{width:64px;height:64px;border-radius:50%;font-size:24px;display:flex;align-items:center;justify-content:center}
+#remoteVideo{width:100%;height:100%;object-fit:cover;background:#111827}
+#localVideo{position:absolute;top:70px;right:14px;width:120px;height:170px;object-fit:cover;border-radius:14px;border:2px solid #00e676;background:#000;z-index:5}
+.callAvatarBig{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#00e676,#2563eb);display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:900;margin-bottom:12px}
+.installBanner{background:#00e676;color:#000;border-radius:14px;padding:12px;margin-bottom:12px;display:none;text-align:center;font-weight:800}
+</style>
+</head>
+<body>
+<div id="authScreen">
+  <div class="logo">KEITH<span>.</span></div>
+  <div class="sub" data-i="subtitle">WhatsApp + TikTok + Instagram<br>Kolwezi - Appels Audio + Vidéo - 1 Coin = 1 FC</div>
+  <div id="installBannerAuth" class="installBanner">📱 INSTALLE KEITH SUR TON TÉLÉPHONE<br><button id="installBtnAuth" style="background:#000;color:#00e676;padding:10px 18px;border-radius:999px;font-weight:900;margin-top:8px">📥 INSTALLER KEITH</button><div style="font-size:11px;font-weight:400;margin-top:6px">Sur iPhone : Partager → Ajouter à l'écran d'accueil</div></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;width:100%;max-width:380px">
+    <button class="langBtn active" onclick="setLang('fr',this)">🇫🇷 Français</button>
+    <button class="langBtn" onclick="setLang('ln',this)">🇨🇩 Lingala</button>
+    <button class="langBtn" onclick="setLang('sw',this)">🇨🇩 Swahili</button>
+    <button class="langBtn" onclick="setLang('en',this)">🇺🇸 English</button>
+  </div>
+  <div class="card">
+    <h3 data-i="createAccount">Créer mon compte</h3>
+    <div id="authError" class="error"></div>
+    <input id="authName" class="field" placeholder="Ton nom ex: Keith Kabongo">
+    <input id="authPhone" class="field" placeholder="Ton numéro ex: 0971234567">
+    <input id="authEmail" class="field" type="email" placeholder="Ton email ex: keith@gmail.com">
+    <input id="authPass" class="field" type="password" placeholder="Mot de passe (6 caractères min)">
+    <button class="btn btn-green" onclick="doAuth('signup')" data-i="createBtn">CRÉER MON COMPTE</button>
+    <button class="btn btn-ghost" onclick="doAuth('login')" data-i="loginBtn">J'ai déjà un compte - SE CONNECTER</button>
+  </div>
+</div>
+<div id="app">
+  <div class="topbar"><b>KEITH<i>.</i></b><div class="pill"><span>🪙</span><span class="coin" id="myCoins">0 Coins</span></div><div class="pill" id="myNameTop">...</div></div>
+  <div class="tabs">
+    <div class="tab active" onclick="showPage('chats',this)" data-i="tabChats">💬 Chats</div>
+    <div class="tab" onclick="showPage('videos',this)" data-i="tabVideos">🎬 Vidéo Keith</div>
+    <div class="tab" onclick="showPage('insta',this)" data-i="tabInsta">📸 InstaLife</div>
+    <div class="tab" onclick="showPage('coins',this)" data-i="tabCoins">🪙 Coins</div>
+    <div class="tab" onclick="showPage('settings',this)" data-i="tabSettings">⚙️ Réglages</div>
+  </div>
+  <div class="content">
+    <div id="page-chats" class="page active">
+      <div id="installBannerApp" class="installBanner">📱 Tu peux installer KEITH ! <button id="installBtnApp" style="background:#000;color:#00e676;padding:8px 14px;border-radius:999px;font-weight:900;margin-left:6px">INSTALLER</button></div>
+      <h3 style="margin:4px 0 8px" data-i="statusTitle">🟢 Statuts - 24h seulement</h3>
+      <div class="statusRow" id="statusRow"></div>
+      <div class="card" style="max-width:100%;margin-bottom:12px">
+        <h3 data-i="addStatus">Ajouter mon Statut WhatsApp</h3>
+        <input id="statusText" class="field" placeholder="Quoi de neuf ?">
+        <input id="statusImg" class="field" placeholder="Lien photo (optionnel) https://...">
+        <button class="btn btn-green" onclick="postStatus()" data-i="publishStatus">PUBLIER MON STATUT 🟢</button>
+        <div id="myStatusViews" style="margin-top:12px"></div>
+      </div>
+      <div class="addBox">
+        <h3 data-i="addContactTitle">➕ Ajouter un contact</h3>
+        <input id="addPhone" class="field" placeholder="Numéro de ton ami ex: 0971234567">
+        <button class="btn btn-green" onclick="addContact()" data-i="addContactBtn">AJOUTER CE CONTACT</button>
+        <div id="addMsg" class="small" style="color:#fff"></div>
+      </div>
+      <div class="search">🔍 <input id="searchUser" placeholder="Rechercher dans mes contacts..." oninput="renderContacts()"></div>
+      <div id="usersList"></div>
+      <div id="chatView" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><button class="act" style="flex:0;padding:10px 14px" onclick="closeChat()" data-i="back">⬅ Retour</button><div style="display:flex;gap:6px"><button class="act" style="flex:0;padding:10px 14px;background:#2563eb" onclick="startCall(false)">📞 Audio</button><button class="act" style="flex:0;padding:10px 14px;background:#7c3aed" onclick="startCall(true)">🎥 Vidéo</button></div></div>
+        <div style="margin:12px 0"><b id="chatWith">...</b> <span style="color:#00e676;font-size:12px">● en ligne</span></div>
+        <div class="chatBox" id="messagesBox"></div>
+        <div class="inputRow">
+          <input id="msgInput" placeholder="Écris ton message...">
+          <button class="micBtn" id="micBtn" onclick="toggleVoice()">🎤</button>
+          <button class="callBtn" onclick="startCall(false)">📞</button>
+          <button class="videoBtn" onclick="startCall(true)">🎥</button>
+          <button class="sendBtn" onclick="sendMsg()">➤</button>
+        </div>
+        <div id="recBox" class="recBox">🔴 Enregistrement... <span id="recTime">0s</span><br><button class="btn btn-green" style="margin-top:8px" onclick="stopVoice()">⏹️ STOP & ENVOYER LE VOCAL</button><button class="btn btn-ghost" onclick="cancelVoice()">❌ Annuler</button></div>
+      </div>
+    </div>
+    <div id="page-videos" class="page">
+      <div class="card" style="max-width:100%;margin-bottom:12px"><h3 data-i="publishVideoTitle">Publier une vidéo</h3><input id="vidTitle" class="field" placeholder="Titre..."><input id="vidUrl" class="field" placeholder="Lien image / vidéo"><button class="btn btn-blue" onclick="publishVideo()" data-i="publishVideoBtn">Publier 🎬</button></div>
+      <div id="videosList"></div>
+    </div>
+    <div id="page-insta" class="page">
+      <div class="card" style="max-width:100%;margin-bottom:12px"><h3 data-i="publishPostTitle">Publier une photo InstaLife</h3><input id="postText" class="field" placeholder="Quoi de neuf ?"><input id="postImg" class="field" placeholder="Lien photo https://..."><button class="btn btn-blue" onclick="publishPost()" data-i="publishPostBtn">Publier 📸</button></div>
+      <div id="postsList"></div>
+    </div>
+    <div id="page-coins" class="page">
+      <h3 style="margin-bottom:8px" data-i="buyCoins">Acheter des Coins - 1 Coin = 1 FC</h3>
+      <div style="background:#facc15;color:#000;border-radius:12px;padding:10px;text-align:center;font-weight:800;margin-bottom:12px">💡 1 COIN = 1 FC - SIMPLE !<br><span style="font-weight:400;font-size:12px">100 Coins = 100 FC | 5000 Coins = 5000 FC</span></div>
+      <div id="packs"></div>
+      <div class="card" style="max-width:100%;margin-top:14px"><h3 data-i="alreadyPaid">J'ai déjà payé</h3><select id="payPack" class="field"><option value="100|100">100 Coins = 100 FC</option><option value="500|500">500 Coins = 500 FC</option><option value="1000|1000">1000 Coins = 1000 FC</option><option value="5000|5000">5000 Coins = 5000 FC</option></select><input id="payTx" class="field" placeholder="Code transaction ex: MP123456789"><input id="payName" class="field" placeholder="Ton nom Mobile Money"><button class="btn btn-green" onclick="declarePayment()" data-i="iPaid">J'AI PAYÉ ✅</button><div id="payMsg" class="small"></div></div>
+      <div class="card" style="max-width:100%;margin-top:12px"><h3 data-i="myRequests">Mes demandes</h3><div id="myRequests"></div></div>
+    </div>
+    <div id="page-settings" class="page">
+      <div class="card" style="max-width:100%;margin-bottom:12px;border-color:#00e676"><h3>📱 Installer KEITH</h3><p style="font-size:13px;color:#9ca3af">Sur Android : clique sur INSTALLER en haut. Sur iPhone : Partager → Ajouter à l'écran d'accueil.</p><button class="btn btn-green" id="installBtnSettings" style="margin-top:10px">📥 INSTALLER KEITH SUR MON TÉLÉPHONE</button></div>
+      <div class="card" style="max-width:100%;margin-bottom:12px;border-color:#00e676"><h3>🌍 <span data-i="language">Langue</span></h3><div style="display:flex;gap:8px;margin-top:10px"><button class="langBtn" data-lang="fr" onclick="setLang('fr',this)">🇫🇷 Français</button><button class="langBtn" data-lang="ln" onclick="setLang('ln',this)">🇨🇩 Lingala</button><button class="langBtn" data-lang="sw" onclick="setLang('sw',this)">🇨🇩 Swahili</button><button class="langBtn" data-lang="en" onclick="setLang('en',this)">🇺🇸 English</button></div></div>
+      <div class="card" style="max-width:100%"><h3 data-i="myProfile">Mon profil</h3><p style="font-size:13px;color:#9ca3af;margin:6px 0"><span data-i="nameLabel">Nom:</span> <b id="profileName">-</b><br><span data-i="phoneLabel">Numéro:</span> <b id="profilePhone">-</b><br>Email: <b id="profileEmail">-</b><br>Coins: <b id="profileCoins" style="color:#facc15">0</b></p><button class="btn btn-ghost" onclick="logout()" data-i="logout">Se déconnecter</button></div>
+      <div id="adminPanel" style="display:none"><div class="adminBox"><h3>👑 PANNEAU ADMIN</h3><div id="adminRequests"></div><button class="btn btn-ghost" onclick="loadAdminRequests()">Rafraîchir</button></div></div>
+    </div>
+  </div>
+  <div class="bottomNav">
+    <div class="navBtn active" onclick="showPage('chats',null,this)"><div>💬</div><span data-i="tabChats">Chats</span></div>
+    <div class="navBtn" onclick="showPage('videos',null,this)"><div>🎬</div><span data-i="tabVideos">Vidéo</span></div>
+    <div class="navBtn" onclick="showPage('insta',null,this)"><div>📸</div><span data-i="tabInsta">InstaLife</span></div>
+    <div class="navBtn" onclick="showPage('coins',null,this)"><div>🪙</div><span data-i="tabCoins">Coins</span></div>
+    <div class="navBtn" onclick="showPage('settings',null,this)"><div>⚙️</div><span data-i="tabSettings">Réglages</span></div>
+  </div>
+</div>
+<div id="statusViewer" class="statusViewer">
+  <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;background:#000"><b id="viewerName">...</b><button style="background:#ef4444;color:#fff;padding:8px 14px;border-radius:999px;font-weight:800" onclick="closeStatus()">✕ Fermer</button></div>
+  <div id="viewerText" style="padding:16px;text-align:center;font-size:18px;font-weight:700"></div>
+  <img id="viewerImg" src="">
+  <div id="viewerViews" style="padding:12px;background:#111827"></div>
+</div>
+<div id="callScreen" class="callScreen">
+  <video id="remoteVideo" autoplay playsinline></video>
+  <video id="localVideo" autoplay playsinline muted></video>
+  <div class="callTop"><div><b id="callName">...</b><div id="callStatus" style="font-size:12px;color:#a7f3d0">Appel...</div></div><div id="callTimer" style="font-weight:900">00:00</div></div>
+  <div id="audioOnlyBox" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;display:none"><div class="callAvatarBig" id="callAvatar">K</div><h2 id="callName2">...</h2><p style="color:#9ca3af">Appel Audio</p></div>
+  <div id="incomingOverlay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;display:none;background:rgba(0,0,0,0.8);padding:24px;border-radius:20px"><div class="callAvatarBig" id="incomingAvatar">K</div><h2 id="incomingName">...</h2><p id="incomingType" style="color:#9ca3af;margin:8px 0">t'appelle...</p><div style="display:flex;gap:16px;justify-content:center;margin-top:16px"><button class="callAction" style="background:#00e676;color:#000" onclick="acceptCall()">✅</button><button class="callAction" style="background:#ef4444;color:#fff" onclick="declineCall()">❌</button></div></div>
+  <div class="callBottom"><div class="callBtnRow" id="activeBtns"><button class="callAction" id="muteBtn" style="background:#1f2937" onclick="toggleMute()">🎤</button><button class="callAction" id="camBtn" style="background:#1f2937" onclick="toggleCamera()">📷</button><button class="callAction" style="background:#ef4444;color:#fff" onclick="endCall()">🔴</button></div><p class="small" style="color:#fff">🎤 Micro &nbsp; 📷 Caméra &nbsp; 🔴 Raccrocher</p></div>
+  <audio id="remoteAudio" autoplay playsinline></audio>
+</div>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDmWKvBz4Fhld3bolsGEZ64GS-VCbdJN8s",
+  authDomain: "keith-app-7cb50.firebaseapp.com",
+  projectId: "keith-app-7cb50",
+  storageBucket: "keith-app-7cb50.firebasestorage.app",
+  messagingSenderId: "798947506707",
+  appId: "1:798947506707:web:d2227345a5fe7a1a1f9de6",
+  measurementId: "G-3ZJVH56M3C"
+};
+const ADMIN_EMAIL = "keith.admin@gmail.com";
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+// ===== INSTALLABLE PWA =====
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('installBannerAuth').style.display='block';
+  document.getElementById('installBannerApp').style.display='block';
+});
+async function doInstall(){
+  if(deferredPrompt){ deferredPrompt.prompt(); let r=await deferredPrompt.userChoice; if(r.outcome==='accepted') alert("✅ KEITH installé ! Regarde ton écran d'accueil."); deferredPrompt=null; }
+  else { alert("Sur Android : Menu Chrome → Ajouter à l'écran d'accueil\nSur iPhone : Partager → Ajouter à l'écran d'accueil"); }
+}
+document.getElementById('installBtnAuth').onclick=doInstall;
+document.getElementById('installBtnApp').onclick=doInstall;
+document.getElementById('installBtnSettings').onclick=doInstall;
+if('serviceWorker' in navigator){ window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); }); }
+const LANGS = {
+  fr: {subtitle:"WhatsApp + TikTok + Instagram<br>Kolwezi - Appels Audio + Vidéo - 1 Coin = 1 FC",createAccount:"Créer mon compte",createBtn:"CRÉER MON COMPTE",loginBtn:"J'ai déjà un compte - SE CONNECTER",tabChats:"💬 Chats",tabVideos:"🎬 Vidéo Keith",tabInsta:"📸 InstaLife",tabCoins:"🪙 Coins",tabSettings:"⚙️ Réglages",statusTitle:"🟢 Statuts - 24h seulement",addStatus:"Ajouter mon Statut WhatsApp",publishStatus:"PUBLIER MON STATUT 🟢",addContactTitle:"➕ Ajouter un contact",addContactBtn:"AJOUTER CE CONTACT",back:"⬅ Retour",publishVideoTitle:"Publier une vidéo",publishVideoBtn:"Publier 🎬",publishPostTitle:"Publier une photo InstaLife",publishPostBtn:"Publier 📸",buyCoins:"Acheter des Coins - 1 Coin = 1 FC",alreadyPaid:"J'ai déjà payé",iPaid:"J'AI PAYÉ ✅",myRequests:"Mes demandes",language:"Langue",myProfile:"Mon profil",nameLabel:"Nom:",phoneLabel:"Numéro:",logout:"Se déconnecter"},
+  ln: {subtitle:"WhatsApp + TikTok + Instagram<br>Kolwezi - Babengi - 1 Coin = 1 FC",createAccount:"Salela compte na ngai",createBtn:"SALELA COMPTE NA NGAI",loginBtn:"Nazali na compte déjà - KOTA",tabChats:"💬 Chats",tabVideos:"🎬 Video Keith",tabInsta:"📸 InstaLife",tabCoins:"🪙 Coins",tabSettings:"⚙️ Réglages",statusTitle:"🟢 Statuts - 24h kaka",addStatus:"Tia Statut na ngai ya WhatsApp",publishStatus:"TIA STATUT NA NGAI 🟢",addContactTitle:"➕ Bakisa contact",addContactBtn:"BAKISA CONTACT OYO",back:"⬅ Zonga",publishVideoTitle:"Tia video",publishVideoBtn:"Tia 🎬",publishPostTitle:"Tia photo InstaLife",publishPostBtn:"Tia 📸",buyCoins:"Somba ba Coins - 1 Coin = 1 FC",alreadyPaid:"Nafuti déjà",iPaid:"NAFUTI DÉJÀ ✅",myRequests:"Ba demandes na ngai",language:"Monoko",myProfile:"Profil na ngai",nameLabel:"Nkombo:",phoneLabel:"Numéro:",logout:"Bima"},
+  sw: {subtitle:"WhatsApp + TikTok + Instagram<br>Kolwezi - Simu - 1 Coin = 1 FC",createAccount:"Unda akaunti yangu",createBtn:"UNDA AKAUNTI YANGU",loginBtn:"Nina akaunti tayari - INGIA",tabChats:"💬 Chats",tabVideos:"🎬 Video Keith",tabInsta:"📸 InstaLife",tabCoins:"🪙 Coins",tabSettings:"⚙️ Mipangilio",statusTitle:"🟢 Status - Saa 24 tu",addStatus:"Weka Status yangu ya WhatsApp",publishStatus:"WEKA STATUS YANGU 🟢",addContactTitle:"➕ Ongeza rafiki",addContactBtn:"ONGEZA RAFIKI HUYU",back:"⬅ Rudi",publishVideoTitle:"Chapisha video",publishVideoBtn:"Chapisha 🎬",publishPostTitle:"Chapisha picha InstaLife",publishPostBtn:"Chapisha 📸",buyCoins:"Nunua Coins - 1 Coin = 1 FC",alreadyPaid:"Nimeshalipa",iPaid:"NIMESHAlIPA ✅",myRequests:"Maombi yangu",language:"Lugha",myProfile:"Wasifu wangu",nameLabel:"Jina:",phoneLabel:"Nambari:",logout:"Toka"},
+  en: {subtitle:"WhatsApp + TikTok + Instagram<br>Kolwezi - Calls - 1 Coin = 1 FC",createAccount:"Create my account",createBtn:"CREATE MY ACCOUNT",loginBtn:"I already have an account - LOGIN",tabChats:"💬 Chats",tabVideos:"🎬 Keith Video",tabInsta:"📸 InstaLife",tabCoins:"🪙 Coins",tabSettings:"⚙️ Settings",statusTitle:"🟢 Status - 24h only",addStatus:"Add my WhatsApp Status",publishStatus:"PUBLISH MY STATUS 🟢",addContactTitle:"➕ Add a contact",addContactBtn:"ADD THIS CONTACT",back:"⬅ Back",publishVideoTitle:"Publish a video",publishVideoBtn:"Publish 🎬",publishPostTitle:"Publish an InstaLife photo",publishPostBtn:"Publish 📸",buyCoins:"Buy Coins - 1 Coin = 1 FC",alreadyPaid:"I already paid",iPaid:"I PAID ✅",myRequests:"My requests",language:"Language",myProfile:"My profile",nameLabel:"Name:",phoneLabel:"Phone:",logout:"Log out"}
+};
+let currentLang = localStorage.getItem('keith_lang') || 'fr';
+function setLang(lang, btn){
+  currentLang = lang; localStorage.setItem('keith_lang', lang);
+  document.querySelectorAll('.langBtn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('[data-lang="'+lang+'"]').forEach(b=>b.classList.add('active'));
+  if(btn) btn.classList.add('active');
+  let dict = LANGS[lang];
+  document.querySelectorAll('[data-i]').forEach(el=>{ let key = el.getAttribute('data-i'); if(dict[key]) el.innerHTML = dict[key]; });
+}
+document.addEventListener('DOMContentLoaded', ()=>{ setLang(currentLang); });
+let currentUser=null, currentUserData=null, chatWithId=null, chatWithName="", myLatestStatusId=null;
+let mediaRecorder=null, audioChunks=[], isRecording=false, recTimer=null, recSeconds=0;
+let peer=null, localStream=null, currentCallId=null, callTimerInterval=null, callSeconds=0, isMuted=false, isCamOff=false, incomingCallData=null, callUnsub=null, currentCallIsVideo=false;
+const rtcConfig = {iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
+function getCallId(a,b){ return [a,b].sort().join('_') + '_call'; }
+async function startCall(isVideo){
+  if(!chatWithId){ alert("Ouvre un chat d'abord"); return; }
+  currentCallIsVideo=isVideo;
+  currentCallId = getCallId(currentUser.uid, chatWithId);
+  showCallScreen(chatWithName, isVideo ? "🎥 Appel vidéo en cours..." : "📞 Appel audio en cours...", isVideo);
+  try{
+    localStream = await navigator.mediaDevices.getUserMedia({audio:true, video: isVideo});
+    document.getElementById('localVideo').srcObject = isVideo ? localStream : null;
+    document.getElementById('localVideo').style.display = isVideo ? 'block' : 'none';
+    document.getElementById('audioOnlyBox').style.display = isVideo ? 'none' : 'block';
+    peer = new RTCPeerConnection(rtcConfig);
+    localStream.getTracks().forEach(t=>peer.addTrack(t, localStream));
+    peer.ontrack = e=>{ if(e.streams[0].getVideoTracks().length>0) document.getElementById('remoteVideo').srcObject = e.streams[0]; document.getElementById('remoteAudio').srcObject = e.streams[0]; };
+    peer.onicecandidate = async e=>{ if(e.candidate){ await db.collection('calls').doc(currentCallId).collection('callerCandidates').add(e.candidate.toJSON()); } };
+    let offer = await peer.createOffer();
+    await peer.setLocalDescription(offer);
+    await db.collection('calls').doc(currentCallId).set({callerId:currentUser.uid,callerName:currentUserData.name,calleeId:chatWithId,calleeName:chatWithName,offer:{type:offer.type,sdp:offer.sdp},isVideo:isVideo,status:'calling',time:firebase.firestore.FieldValue.serverTimestamp()});
+    listenForAnswer();
+    db.collection('calls').doc(currentCallId).collection('calleeCandidates').onSnapshot(s=>{ s.docChanges().forEach(async ch=>{ if(ch.type==='added'){ try{ await peer.addIceCandidate(new RTCIceCandidate(ch.doc.data())); }catch(e){} } }); });
+  }catch(err){ alert("Autorise micro + caméra."); hideCallScreen(); }
+}
+function listenForAnswer(){
+  callUnsub = db.collection('calls').doc(currentCallId).onSnapshot(async doc=>{
+    if(!doc.exists) return;
+    let data = doc.data();
+    if(data.answer && peer && !peer.currentRemoteDescription){ try{ await peer.setRemoteDescription(new RTCSessionDescription(data.answer)); document.getElementById('callStatus').innerText="✅ En communication !"; startCallTimer(); }catch(e){} }
+    if(data.status==='declined'){ alert("Ton ami a refusé ❌"); endCall(true); }
+    if(data.status==='ended'){ endCall(true); }
+  });
+}
+function listenForIncomingCalls(){
+  if(!currentUser) return;
+  db.collection('calls').where('calleeId','==',currentUser.uid).where('status','==','calling').onSnapshot(s=>{
+    s.forEach(doc=>{
+      let data = doc.data();
+      if(data.callerId === currentUser.uid) return;
+      if(currentCallId === doc.id) return;
+      incomingCallData = {id:doc.id, ...data};
+      currentCallId = doc.id;
+      currentCallIsVideo = data.isVideo;
+      chatWithId = data.callerId; chatWithName = data.callerName;
+      document.getElementById('callScreen').style.display='flex';
+      document.getElementById('callName').innerText=data.callerName;
+      document.getElementById('callName2').innerText=data.callerName;
+      document.getElementById('callAvatar').innerText=data.callerName.charAt(0).toUpperCase();
+      document.getElementById('incomingAvatar').innerText=data.callerName.charAt(0).toUpperCase();
+      document.getElementById('incomingName').innerText=data.callerName;
+      document.getElementById('incomingType').innerText = data.isVideo ? "t'appelle en VIDÉO 🎥..." : "t'appelle en AUDIO 📞...";
+      document.getElementById('incomingOverlay').style.display='block';
+      document.getElementById('activeBtns').style.display='none';
+      document.getElementById('audioOnlyBox').style.display = data.isVideo ? 'none' : 'block';
+      try{ let a = new Audio('https://actions.google.com/sounds/v1/alarms/phone_call.ogg'); a.loop=true; a.play(); window._ringtone=a; }catch(e){}
+    });
+  });
+}
+async function acceptCall(){
+  if(window._ringtone) window._ringtone.pause();
+  document.getElementById('incomingOverlay').style.display='none';
+  document.getElementById('activeBtns').style.display='flex';
+  document.getElementById('callStatus').innerText="✅ En communication !";
+  try{
+    localStream = await navigator.mediaDevices.getUserMedia({audio:true, video: currentCallIsVideo});
+    document.getElementById('localVideo').srcObject = currentCallIsVideo ? localStream : null;
+    document.getElementById('localVideo').style.display = currentCallIsVideo ? 'block' : 'none';
+    peer = new RTCPeerConnection(rtcConfig);
+    localStream.getTracks().forEach(t=>peer.addTrack(t, localStream));
+    peer.ontrack = e=>{ if(e.streams[0].getVideoTracks().length>0) document.getElementById('remoteVideo').srcObject = e.streams[0]; document.getElementById('remoteAudio').srcObject = e.streams[0]; };
+    peer.onicecandidate = async e=>{ if(e.candidate){ await db.collection('calls').doc(currentCallId).collection('calleeCandidates').add(e.candidate.toJSON()); } };
+    await peer.setRemoteDescription(new RTCSessionDescription(incomingCallData.offer));
+    let answer = await peer.createAnswer();
+    await peer.setLocalDescription(answer);
+    await db.collection('calls').doc(currentCallId).update({answer:{type:answer.type,sdp:answer.sdp}, status:'active'});
+    db.collection('calls').doc(currentCallId).collection('callerCandidates').onSnapshot(s=>{ s.docChanges().forEach(async ch=>{ if(ch.type==='added'){ try{ await peer.addIceCandidate(new RTCIceCandidate(ch.doc.data())); }catch(e){} } }); });
+    db.collection('calls').doc(currentCallId).onSnapshot(doc=>{ if(doc.exists && doc.data().status==='ended'){ endCall(true); } });
+    startCallTimer();
+  }catch(err){ alert("Autorise micro + caméra."); hideCallScreen(); }
+}
+async function declineCall(){
+  if(window._ringtone) window._ringtone.pause();
+  if(currentCallId) await db.collection('calls').doc(currentCallId).update({status:'declined'});
+  hideCallScreen();
+}
+function toggleMute(){
+  if(!localStream) return;
+  isMuted=!isMuted;
+  localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted);
+  document.getElementById('muteBtn').innerText = isMuted ? "🔇" : "🎤";
+  document.getElementById('callStatus').innerText = isMuted ? "🔇 Tu es en muet" : "✅ En communication !";
+}
+function toggleCamera(){
+  if(!localStream) return;
+  let vTracks = localStream.getVideoTracks();
+  if(vTracks.length===0){ alert("C'est un appel audio."); return; }
+  isCamOff=!isCamOff;
+  vTracks.forEach(t=>t.enabled=!isCamOff);
+  document.getElementById('camBtn').innerText = isCamOff ? "📷❌" : "📷";
+}
+async function endCall(silent){
+  if(window._ringtone) window._ringtone.pause();
+  if(currentCallId && !silent){ try{ await db.collection('calls').doc(currentCallId).update({status:'ended'}); }catch(e){} }
+  if(peer) try{ peer.close(); }catch(e){}
+  if(localStream) localStream.getTracks().forEach(t=>t.stop());
+  peer=null; localStream=null; stopCallTimer(); currentCallId=null; incomingCallData=null; isMuted=false; isCamOff=false;
+  if(callUnsub) callUnsub();
+  hideCallScreen();
+  if(!silent) alert("Appel terminé 📞");
+}
+function showCallScreen(name, status, isVideo){
+  document.getElementById('callScreen').style.display='flex';
+  document.getElementById('callName').innerText=name;
+  document.getElementById('callName2').innerText=name;
+  document.getElementById('callAvatar').innerText=name.charAt(0).toUpperCase();
+  document.getElementById('callStatus').innerText=status;
+  document.getElementById('incomingOverlay').style.display='none';
+  document.getElementById('activeBtns').style.display='flex';
+  document.getElementById('audioOnlyBox').style.display = isVideo ? 'none' : 'block';
+  document.getElementById('localVideo').style.display = isVideo ? 'block' : 'none';
+}
+function hideCallScreen(){ document.getElementById('callScreen').style.display='none'; document.getElementById('remoteVideo').srcObject=null; document.getElementById('localVideo').srcObject=null; document.getElementById('incomingOverlay').style.display='none'; document.getElementById('audioOnlyBox').style.display='none'; }
+function startCallTimer(){
+  callSeconds=0; clearInterval(callTimerInterval);
+  callTimerInterval=setInterval(()=>{ callSeconds++; let m = Math.floor(callSeconds/60).toString().padStart(2,'0'); let s = (callSeconds%60).toString().padStart(2,'0'); document.getElementById('callTimer').innerText=m+":"+s; },1000);
+}
+function stopCallTimer(){ clearInterval(callTimerInterval); document.getElementById('callTimer').innerText="00:00"; }
+async function toggleVoice(){
+  if(isRecording){ stopVoice(); return; }
+  try{
+    let stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks=[];
+    mediaRecorder.ondataavailable = e=>{ if(e.data.size>0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = async ()=>{
+      let blob = new Blob(audioChunks, {type:'audio/webm'});
+      let reader = new FileReader();
+      reader.onloadend = async ()=>{
+        let base64 = reader.result;
+        if(!chatWithId){ alert("Ouvre un chat d'abord"); return; }
+        let cid = chatId(currentUser.uid, chatWithId);
+        await db.collection('chats').doc(cid).collection('messages').add({type:'voice', audio: base64, text:'🎤 Message vocal', sender: currentUser.uid, time: firebase.firestore.FieldValue.serverTimestamp()});
+      };
+      reader.readAsDataURL(blob);
+      stream.getTracks().forEach(t=>t.stop());
+    };
+    mediaRecorder.start();
+    isRecording=true;
+    document.getElementById('micBtn').classList.add('rec');
+    document.getElementById('recBox').style.display='block';
+    recSeconds=0;
+    recTimer=setInterval(()=>{ recSeconds++; document.getElementById('recTime').innerText=recSeconds+"s"; if(recSeconds>=60) stopVoice(); },1000);
+  }catch(err){ alert("Il faut autoriser le micro."); }
+}
+function stopVoice(){
+  if(!isRecording) return;
+  isRecording=false; clearInterval(recTimer);
+  document.getElementById('micBtn').classList.remove('rec');
+  document.getElementById('recBox').style.display='none';
+  if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop();
+}
+function cancelVoice(){
+  isRecording=false; clearInterval(recTimer); audioChunks=[];
+  document.getElementById('micBtn').classList.remove('rec');
+  document.getElementById('recBox').style.display='none';
+  if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop();
+  mediaRecorder.onstop = ()=>{};
+}
+function cleanPhone(p){return p.replace(/[\s\-\+]/g,'').slice(-10)}
+function showErr(t){let e=document.getElementById('authError');e.style.display='block';e.innerText=t}
+async function doAuth(mode){
+  let name=document.getElementById('authName').value.trim();
+  let phone=document.getElementById('authPhone').value.trim();
+  let email=document.getElementById('authEmail').value.trim();
+  let pass=document.getElementById('authPass').value;
+  document.getElementById('authError').style.display='none';
+  if(!email||!pass){showErr("Mets ton email et mot de passe.");return}
+  if(pass.length<6){showErr("Mot de passe: 6 caractères minimum.");return}
+  try{
+    if(mode==='signup'){
+      if(!name){showErr("Mets ton nom.");return}
+      if(!phone||cleanPhone(phone).length<9){showErr("Mets ton vrai numéro ex: 0971234567");return}
+      let cred=await auth.createUserWithEmailAndPassword(email,pass);
+      await db.collection('users').doc(cred.user.uid).set({name:name,phone:cleanPhone(phone),email:email,coins:0,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    } else { await auth.signInWithEmailAndPassword(email,pass); }
+  }catch(err){ showErr(err.code==='auth/email-already-in-use'?"Cet email existe déjà. Clique SE CONNECTER.":err.message); }
+}
+auth.onAuthStateChanged(async(user)=>{
+  if(user){
+    currentUser=user;
+    let doc=await db.collection('users').doc(user.uid).get();
+    if(doc.exists) currentUserData=doc.data();
+    else {currentUserData={name:user.email.split('@')[0],phone:"",email:user.email,coins:0}; await db.collection('users').doc(user.uid).set(currentUserData);}
+    document.getElementById('authScreen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    document.getElementById('myNameTop').innerText=currentUserData.name;
+    document.getElementById('profileName').innerText=currentUserData.name;
+    document.getElementById('profilePhone').innerText=currentUserData.phone||"-";
+    document.getElementById('profileEmail').innerText=currentUserData.email;
+    updateCoinsUI();
+    if(user.email===ADMIN_EMAIL) document.getElementById('adminPanel').style.display='block';
+    renderContacts(); renderStatuses(); renderVideos(); renderPosts(); renderPacks(); loadMyRequests(); loadAdminRequests();
+    listenForIncomingCalls();
+    db.collection('users').doc(user.uid).onSnapshot(d=>{if(d.exists){currentUserData=d.data(); updateCoinsUI();}});
+  } else { document.getElementById('authScreen').style.display='flex'; document.getElementById('app').style.display='none'; }
+});
+function updateCoinsUI(){let c=currentUserData?.coins||0;document.getElementById('myCoins').innerText=c+" Coins";document.getElementById('profileCoins').innerText=c;}
+function logout(){auth.signOut()}
+function showPage(id,tabEl,navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(tabEl) tabEl.classList.add('active');
+  document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
+  if(navEl) navEl.classList.add('active');
+  if(id==='chats'){renderContacts(); renderStatuses();}
+  if(id==='coins') loadMyRequests();
+  if(id==='settings') loadAdminRequests();
+}
+async function postStatus(){
+  let text=document.getElementById('statusText').value.trim();
+  let img=document.getElementById('statusImg').value.trim();
+  if(!text && !img){alert("Écris quelque chose ou mets une photo");return}
+  await db.collection('statuses').add({userId:currentUser.uid,userName:currentUserData.name,text:text,img:img||'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',viewsCount:0,time:firebase.firestore.FieldValue.serverTimestamp()});
+  document.getElementById('statusText').value="";document.getElementById('statusImg').value="";
+  alert("✅ Statut publié !");
+  renderStatuses();
+}
+async function renderStatuses(){
+  let contactsSnap=await db.collection('users').doc(currentUser.uid).collection('contacts').get();
+  let contactIds=[currentUser.uid];
+  contactsSnap.forEach(d=>contactIds.push(d.id));
+  let snap=await db.collection('statuses').orderBy('time','desc').limit(50).get();
+  let now=Date.now();
+  let myId=null;
+  snap.forEach(d=>{ let s=d.data(); if(s.userId===currentUser.uid && s.time && (now - s.time.toDate().getTime() < 24*60*60*1000)){ if(!myId) myId=d.id; }});
+  myLatestStatusId=myId;
+  let myHtml=`<div class="statusItem" onclick="viewMyStatus()"><div class="statusCircle me"><span style="font-size:28px">${currentUserData.name.charAt(0).toUpperCase()}</span><div class="plus">+</div></div><div class="statusName">Mon Statut</div></div>`;
+  let othersHtml=""; let seen=new Set();
+  snap.forEach(d=>{
+    let s=d.data();
+    if(!contactIds.includes(s.userId)) return;
+    if(s.userId===currentUser.uid) return;
+    if(seen.has(s.userId)) return;
+    seen.add(s.userId);
+    if(s.time && (now - s.time.toDate().getTime() > 24*60*60*1000)) return;
+    let imgEsc=s.img.replace(/'/g,"");
+    let textEsc=s.text.replace(/'/g,"").replace(/"/g,"");
+    othersHtml+=`<div class="statusItem" onclick="viewStatus('${d.id}','${s.userName}','${textEsc}','${imgEsc}',false)"><div class="statusCircle"><img src="${imgEsc}"></div><div class="statusName">${s.userName}</div></div>`;
+  });
+  document.getElementById('statusRow').innerHTML=myHtml+othersHtml;
+  loadMyStatusViews();
+}
+async function loadMyStatusViews(){
+  if(!myLatestStatusId){document.getElementById('myStatusViews').innerHTML="";return}
+  let snap=await db.collection('statuses').doc(myLatestStatusId).collection('views').orderBy('time','desc').get();
+  if(snap.empty){document.getElementById('myStatusViews').innerHTML="<p style='font-size:12px;color:#9ca3af;text-align:center'>👁️ Personne n'a encore vu ton statut.</p>";return}
+  let html="<h4 style='margin-bottom:8px'>👁️ Vu par "+snap.size+" personne(s) :</h4>";
+  snap.forEach(d=>{let v=d.data(); html+=`<div class="viewerRow"><div class="avatar" style="width:36px;height:36px;font-size:14px">${v.viewerName.charAt(0).toUpperCase()}</div><div><b style="font-size:13px">${v.viewerName}</b></div><div style="margin-left:auto">👁️</div></div>`});
+  document.getElementById('myStatusViews').innerHTML=html;
+}
+async function viewStatus(statusId,name,text,img,isMine){
+  document.getElementById('statusViewer').style.display='flex';
+  document.getElementById('viewerName').innerText=name;
+  document.getElementById('viewerText').innerText=text;
+  document.getElementById('viewerImg').src=img;
+  if(!isMine){
+    try{ await db.collection('statuses').doc(statusId).collection('views').doc(currentUser.uid).set({viewerId:currentUser.uid,viewerName:currentUserData.name,time:firebase.firestore.FieldValue.serverTimestamp()}); }catch(e){}
+    document.getElementById('viewerViews').innerHTML="<p style='font-size:12px;color:#9ca3af;text-align:center'>Tu as été compté comme 'Vu' par "+name+"</p>";
+  } else {
+    let snap=await db.collection('statuses').doc(statusId).collection('views').get();
+    document.getElementById('viewerViews').innerHTML=snap.empty?"<p style='font-size:12px;color:#9ca3af;text-align:center'>Personne n'a encore vu.</p>":"<p style='font-size:13px;text-align:center'><b>👁️ Vu par "+snap.size+" personne(s)</b></p>";
+  }
+  renderStatuses();
+}
+async function viewMyStatus(){
+  if(!myLatestStatusId){document.getElementById('statusText').focus();return}
+  let doc=await db.collection('statuses').doc(myLatestStatusId).get();
+  if(!doc.exists) return;
+  let s=doc.data();
+  viewStatus(myLatestStatusId,s.userName,s.text,s.img,true);
+}
+function closeStatus(){document.getElementById('statusViewer').style.display='none'; renderStatuses();}
+async function addContact(){
+  let raw=document.getElementById('addPhone').value.trim();
+  let msg=document.getElementById('addMsg');
+  if(!raw){msg.innerText="Mets un numéro.";return}
+  let phone=cleanPhone(raw);
+  if(phone===currentUserData.phone){msg.innerText="C'est ton propre numéro !";return}
+  let snap=await db.collection('users').where('phone','==',phone).limit(1).get();
+  if(snap.empty){msg.innerText="❌ Ce numéro n'a pas encore KEITH.";return}
+  let friendDoc=snap.docs[0];
+  await db.collection('users').doc(currentUser.uid).collection('contacts').doc(friendDoc.id).set({contactId:friendDoc.id,phone:phone,name:friendDoc.data().name,addedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  await db.collection('users').doc(friendDoc.id).collection('contacts').doc(currentUser.uid).set({contactId:currentUser.uid,phone:currentUserData.phone,name:currentUserData.name,addedAt:firebase.firestore.FieldValue.serverTimestamp()});
+  msg.innerText="✅ "+friendDoc.data().name+" ajouté !";
+  document.getElementById('addPhone').value="";
+  renderContacts(); renderStatuses();
+}
+async function renderContacts(){
+  let q=document.getElementById('searchUser').value.toLowerCase();
+  let snap=await db.collection('users').doc(currentUser.uid).collection('contacts').get();
+  let html="";
+  snap.forEach(d=>{
+    let u=d.data();
+    if(q && !u.name.toLowerCase().includes(q)) return;
+    html+=`<div class="userRow" onclick="openChat('${d.id}','${u.name.replace(/'/g,"")}')"><div class="avatar">${u.name.charAt(0).toUpperCase()}</div><div style="flex:1"><b>${u.name}</b><div style="font-size:12px;color:#9ca3af">📞 ${u.phone} ● en ligne</div></div><div>💬</div></div>`;
+  });
+  document.getElementById('usersList').innerHTML=html||"<p style='color:#9ca3af;text-align:center'>Tu n'as encore aucun contact.</p>";
+}
+function openChat(id,name){chatWithId=id;chatWithName=name;document.getElementById('usersList').style.display='none';document.getElementById('chatView').style.display='block';document.getElementById('chatWith').innerText=name;loadMessages()}
+function closeChat(){document.getElementById('usersList').style.display='block';document.getElementById('chatView').style.display='none';chatWithId=null}
+function chatId(a,b){return [a,b].sort().join('_')}
+async function loadMessages(){
+  let cid=chatId(currentUser.uid,chatWithId);
+  db.collection('chats').doc(cid).collection('messages').orderBy('time').onSnapshot(s=>{
+    let html="";s.forEach(d=>{let m=d.data();
+      if(m.type==='voice'){ html+=`<div class="msg ${m.sender===currentUser.uid?'me':'other'}">🎤 Message vocal<br><audio controls src="${m.audio}"></audio></div>`; }
+      else { html+=`<div class="msg ${m.sender===currentUser.uid?'me':'other'}">${m.text}</div>`; }
+    });
+    document.getElementById('messagesBox').innerHTML=html||"<div style='color:#9ca3af'>Dis bonjour ! 👋</div>";
+  });
+}
+async function sendMsg(){
+  let inp=document.getElementById('msgInput');let t=inp.value.trim();if(!t||!chatWithId) return;
+  let cid=chatId(currentUser.uid,chatWithId);
+  await db.collection('chats').doc(cid).collection('messages').add({type:'text',text:t,sender:currentUser.uid,time:firebase.firestore.FieldValue.serverTimestamp()});
+  inp.value="";
+}
+async function publishVideo(){
+  let t=document.getElementById('vidTitle').value.trim();let u=document.getElementById('vidUrl').value.trim();
+  if(!t){alert("Mets un titre");return}
+  await db.collection('videos').add({title:t,img:u||'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',author:currentUserData.name,likes:0,time:firebase.firestore.FieldValue.serverTimestamp()});
+  document.getElementById('vidTitle').value="";document.getElementById('vidUrl').value="";renderVideos();
+}
+async function renderVideos(){
+  let snap=await db.collection('videos').orderBy('time','desc').limit(20).get();
+  let html="";snap.forEach(d=>{let v=d.data();html+=`<div class="videoCard"><img src="${v.img}"><div class="videoInfo"><b>${v.title}</b><div style="font-size:12px;color:#9ca3af">par ${v.author}</div><div class="actions"><button class="act" onclick="likeVideo('${d.id}',${v.likes||0})">❤️ ${v.likes||0}</button><button class="act">💬</button><button class="act">↗</button></div></div></div>`});
+  document.getElementById('videosList').innerHTML=html||"<p style='color:#9ca3af'>Aucune vidéo.</p>";
+}
+async function likeVideo(id,likes){await db.collection('videos').doc(id).update({likes:likes+1});renderVideos()}
+async function publishPost(){
+  let t=document.getElementById('postText').value.trim();let img=document.getElementById('postImg').value.trim();
+  if(!t){alert("Écris quelque chose");return}
+  await db.collection('posts').add({text:t,img:img,author:currentUserData.name,likes:0,time:firebase.firestore.FieldValue.serverTimestamp()});
+  document.getElementById('postText').value="";document.getElementById('postImg').value="";renderPosts();
+}
+async function renderPosts(){
+  let snap=await db.collection('posts').orderBy('time','desc').limit(20).get();
+  let html="";snap.forEach(d=>{let p=d.data();html+=`<div class="postCard"><b>${p.author}</b><div style="margin-top:6px">${p.text}</div>${p.img?`<img src="${p.img}">`:''}<div class="actions"><button class="act" onclick="likePost('${d.id}',${p.likes||0})">❤️ ${p.likes||0}</button><button class="act">💬</button><button class="act">↗</button></div></div>`});
+  document.getElementById('postsList').innerHTML=html||"<p style='color:#9ca3af'>Aucun post.</p>";
+}
+async function likePost(id,likes){await db.collection('posts').doc(id).update({likes:likes+1});renderPosts()}
+function renderPacks(){
+  // 1 Coin = 1 FC - JAMAIS CHANGER
+  let packs=[{c:100,p:100},{c:500,p:500},{c:1000,p:1000},{c:5000,p:5000}];
+  let html="";packs.forEach(pk=>{html+=`<div class="coinCard"><div><h2>🪙 ${pk.c} Coins</h2><div style="font-size:13px;color:#9ca3af">${pk.p} FC - 1 Coin = 1 FC</div></div><button class="buyBtn" onclick="selectPack('${pk.c}|${pk.p}')">Choisir</button></div>`});
+  document.getElementById('packs').innerHTML=html;
+}
+function selectPack(v){document.getElementById('payPack').value=v;alert("Pack choisi !");}
+async function declarePayment(){
+  let val=document.getElementById('payPack').value.split('|');
+  let coins=parseInt(val[0]);let price=parseInt(val[1]);
+  let tx=document.getElementById('payTx').value.trim();
+  let name=document.getElementById('payName').value.trim();
+  if(!tx||tx.length<4){document.getElementById('payMsg').innerText="Mets ton vrai code.";return}
+  await db.collection('coinRequests').add({userId:currentUser.uid,userName:currentUserData.name,userEmail:currentUserData.email,coins:coins,price:price,tx:tx,moMoName:name||currentUserData.name,status:'en_attente',time:firebase.firestore.FieldValue.serverTimestamp()});
+  document.getElementById('payMsg').innerText="✅ Demande envoyée !";
+  document.getElementById('payTx').value="";loadMyRequests();
+}
+async function loadMyRequests(){
+  if(!currentUser) return;
+  let snap=await db.collection('coinRequests').where('userId','==',currentUser.uid).orderBy('time','desc').limit(10).get();
+  let html="";snap.forEach(d=>{let r=d.data();let col=r.status==='valide'?'#00e676':r.status==='refuse'?'#ef4444':'#facc15';html+=`<div class="req"><b>${r.coins} Coins - ${r.price} FC</b><br><span style="font-size:12px;color:#9ca3af">Code: ${r.tx} | Statut: <b style="color:${col}">${r.status}</b></span></div>`});
+  document.getElementById('myRequests').innerHTML=html||"<p style='color:#9ca3af'>Aucune demande.</p>";
+}
+async function loadAdminRequests(){
+  if(!currentUser || currentUser.email!==ADMIN_EMAIL) return;
+  let snap=await db.collection('coinRequests').where('status','==','en_attente').orderBy('time','desc').limit(20).get();
+  let html="";snap.forEach(d=>{let r=d.data();html+=`<div class="req"><b>${r.userName} - ${r.coins} Coins (${r.price} FC)</b><br><span style="font-size:12px">Code: ${r.tx}</span><br><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-green" style="flex:1" onclick="validateReq('${d.id}','${r.userId}',${r.coins})">VALIDER ✅</button><button class="btn" style="flex:1;background:#ef4444;color:#fff" onclick="refuseReq('${d.id}')">REFUSER ❌</button></div></div>`});
+  document.getElementById('adminRequests').innerHTML=html||"<p style='color:#9ca3af'>Aucune demande.</p>";
+}
+async function validateReq(reqId,userId,coins){
+  let userDoc=await db.collection('users').doc(userId).get();
+  let cur=userDoc.data().coins||0;
+  await db.collection('users').doc(userId).update({coins:cur+coins});
+  await db.collection('coinRequests').doc(reqId).update({status:'valide'});
+  alert("Validé !"); loadAdminRequests();
+}
+async function refuseReq(reqId){await db.collection('coinRequests').doc(reqId).update({status:'refuse'});loadAdminRequests();}
+</script>
+</body>
+</html>
