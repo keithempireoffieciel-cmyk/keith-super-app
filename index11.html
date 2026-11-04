@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Keith Super App - index11 TikTok + Insta</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f0f2f5;padding-bottom:80px}
+.top{background:linear-gradient(135deg,#6a11cb,#2575fc);color:#fff;padding:16px;border-radius:0 0 20px 20px}
+.top h2{font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.coinsBox{background:#fff;color:#111;border-radius:12px;padding:10px 12px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.coinsBox span{color:#f59e0b}
+.btnGold{background:#f59e0b;border:none;padding:8px 14px;border-radius:20px;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
+.svc{background:#fff;border-radius:16px;padding:18px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer}
+.svc .ic{font-size:44px;line-height:1;display:block;margin-bottom:8px}
+.svc b{font-size:14px;display:block}.svc small{font-size:11px;color:#666}
+.page{display:none;padding:14px}.page.active{display:block}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0;font-size:15px}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;background:#2575fc;color:#fff;font-weight:bold;font-size:15px;margin-top:8px}
+.btnG{background:#25D366}.btnY{background:#f59e0b}.btnR{background:#ef4444}.btnD{background:#111}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #ddd;z-index:99}
+.nav div{flex:1;text-align:center;padding:10px 2px;font-size:11px;cursor:pointer;color:#666}.nav div.on{color:#2575fc;font-weight:bold}
+.msg{max-width:80%;padding:9px 12px;border-radius:14px;margin:6px 0;font-size:14px;word-break:break-word}
+.me{background:#dcf8c6;margin-left:auto}.other{background:#fff}
+#chatBox{height:340px;overflow-y:auto;background:#ece5dd;padding:10px;border-radius:12px}
+.ownerBadge{background:gold;color:#111;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold}
+.stories{display:flex;gap:12px;overflow-x:auto;padding:4px 0 10px}
+.story{text-align:center;min-width:62px;cursor:pointer}
+.story .ava{width:58px;height:58px;border-radius:50%;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);padding:3px}
+.story .ava div{width:100%;height:100%;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.story span{font-size:11px}
+.postHead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.postHead .ava{width:38px;height:38px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:18px}
+.postImg{width:100%;height:220px;background:linear-gradient(135deg,#6a11cb,#2575fc);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:60px;color:#fff}
+.postActions{display:flex;gap:16px;font-size:22px;margin:8px 0 4px;cursor:pointer}
+.tik{position:relative;background:#000;color:#fff;border-radius:16px;overflow:hidden;height:480px;margin-bottom:14px}
+.tik .vidArea{height:100%;display:flex;align-items:center;justify-content:center;font-size:70px;background:linear-gradient(180deg,#111,#333)}
+.tik .tikRight{position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;gap:14px;text-align:center}
+.tik .tikRight div{background:rgba(255,255,255,.18);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer}
+.tik .tikBottom{position:absolute;left:10px;bottom:10px;right:70px}
+.tik .tikBottom b{font-size:15px}
+</style></head>
+<body>
+<div id="authPage" style="padding:20px">
+<div style="text-align:center;padding:20px 0"><div style="font-size:60px">👑</div><h1>Keith Super App</h1><p>TikTok • Instagram • Chat • Musique</p></div>
+<div class="card"><h3>Inscription / Connexion</h3>
+<input id="regName" placeholder="Ton prénom (ex: Keith)">
+<input id="regPhone" placeholder="Ton numéro (ex: 0993563222)" type="tel">
+<input id="regPass" placeholder="Mot de passe" type="password">
+<button class="btn" onclick="doRegister()">ENTRER DANS L'APP 🚀</button>
+<p style="font-size:12px;color:#666;margin-top:8px;text-align:center">Patron 0993563222 = Coins Illimités 👑</p></div>
+</div>
+<div id="mainApp" style="display:none">
+<div class="top"><h2 id="helloText">Bonjour</h2><p id="helloSub">Bienvenue</p>
+<div class="coinsBox"><div>🪙 Coins : <span id="coinsText">0</span> <span id="ownerTag"></span></div><button class="btnGold" onclick="showPage('wallet')">+ Acheter</button></div></div>
+<div id="p-home" class="page active">
+<div class="grid">
+<div class="svc" onclick="showPage('insta')"><span class="ic">📸</span><b>InstaLife</b><small>Comme Instagram</small></div>
+<div class="svc" onclick="showPage('videos')"><span class="ic">🎬</span><b>Vidéos</b><small>Comme TikTok</small></div>
+<div class="svc" onclick="showPage('chat')"><span class="ic">💬</span><b>Chat</b><small>Message • 1 Coin</small></div>
+<div class="svc" onclick="showPage('music')"><span class="ic">🎧</span><b>Musique</b><small>Écouter • 1 Coin</small></div>
+<div class="svc" onclick="showPage('cours')"><span class="ic">📘</span><b>Cours</b><small>Apprendre • 5 Coins</small></div>
+<div class="svc" onclick="showPage('notes')"><span class="ic">📝</span><b>Notes</b><small>Écrire • 1 Coin</small></div>
+<div class="svc" onclick="showPage('live')"><span class="ic">🔴</span><b>LIVE</b><small>Direct • 10 Coins</small></div>
+<div class="svc" onclick="showPage('wallet')"><span class="ic">💰</span><b>Portefeuille</b><small>Acheter Coins</small></div>
+</div>
+<div class="card"><b>🔥 Nouveau index11</b><p style="font-size:13px;color:#666;margin-top:6px">Vidéos comme TikTok, InstaLife comme Instagram, + Paramètres.</p><button class="btn btnD" onclick="showPage('settings')">⚙️ ALLER AUX PARAMÈTRES</button></div>
+</div>
+<div id="p-insta" class="page">
+<div class="card"><h3>📸 InstaLife</h3>
+<div class="stories">
+<div class="story" onclick="viewStory('Keith')"><div class="ava"><div>👑</div></div><span>Keith</span></div>
+<div class="story" onclick="viewStory('Charmante')"><div class="ava"><div>💖</div></div><span>Charmante</span></div>
+<div class="story" onclick="viewStory('Toi')"><div class="ava"><div>➕</div></div><span>Ma Story</span></div>
+</div>
+<input id="instaText" placeholder="Écris quelque chose...">
+<select id="instaEmoji"><option value="📸">📸 Photo</option><option value="🌍">🌍 Voyage</option><option value="🍔">🍔 Nourriture</option><option value="⚽">⚽ Sport</option><option value="💖">💖 Amour</option></select>
+<button class="btn" onclick="postInsta()">Publier • 2 Coins</button></div>
+<div id="instaFeed"></div>
+</div>
+<div id="p-videos" class="page">
+<div class="card"><h3>🎬 Vidéos - Comme TikTok</h3>
+<input id="vidTitle" placeholder="Titre de ta vidéo TikTok...">
+<select id="vidMusic"><option value="🎵 Musique Amapiano">🎵 Musique Amapiano</option><option value="🎵 Musique Gospel">🎵 Musique Gospel</option><option value="🎵 Musique Rumba">🎵 Musique Rumba</option><option value="🎵 Sans musique">🎵 Sans musique</option></select>
+<button class="btn btnD" onclick="postVideo()">+ PUBLIER MA VIDÉO • 3 Coins</button>
+<p style="font-size:12px;color:#666;margin-top:6px">Fais défiler vers le bas comme TikTok 👇</p></div>
+<div id="vidFeed"></div>
+</div>
+<div id="p-music" class="page"><div class="card"><h3>🎧 Musique</h3><input type="file" id="musicFile" accept="audio/*"><button class="btn btnY" onclick="addMusic()">+ AJOUTER UNE MUSIQUE</button><audio id="player" controls style="width:100%;margin-top:10px"></audio></div><div id="musicList"></div></div>
+<div id="p-cours" class="page"><div class="card"><h3>📘 Cours</h3><p>Cours 1 : Réussir en business - 5 Coins</p><button class="btn" onclick="buyCours()">Débloquer • 5 Coins</button><div id="coursContent" style="display:none;margin-top:10px">✅ Cours débloqué : Travaille dur, reste honnête, aide les autres.</div></div></div>
+<div id="p-notes" class="page"><div class="card"><h3>📝 Notes</h3><textarea id="noteText" placeholder="Écris ta note..."></textarea><button class="btn" onclick="saveNote()">Enregistrer • 1 Coin</button></div><div id="noteList"></div></div>
+<div id="p-live" class="page"><div class="card"><h3>🔴 LIVE</h3><button class="btn btnR" onclick="startLive()">LANCER MON LIVE • 10 Coins</button></div></div>
+<div id="p-wallet" class="page"><div class="card"><h3>💰 Portefeuille</h3><p>Ton solde : <b id="walletCoins">0</b></p><p style="font-size:13px">Envoie sur Airtel Money : <b>0993563222 - Keith</b></p><select id="pack"><option value="100|100">100 Coins = 100 FC</option><option value="500|450">500 Coins = 450 FC</option><option value="1000|800">1000 Coins = 800 FC</option></select><button class="btn btnG" onclick="buyPack()">J'AI PAYÉ ✅</button><p id="walletMsg" style="font-size:13px;color:green;margin-top:8px"></p></div></div>
+<div id="p-chat" class="page"><div class="card"><h3>💬 Chat</h3><p style="font-size:12px">Ton numéro : <b id="myNumText"></b></p><input id="chatTo" placeholder="Numéro de l'autre" type="tel"><button class="btn btnG" onclick="connectChat()">CONNECTER 💬</button><div id="chatBox"></div><input id="chatInput" placeholder="Écris ton message... 1 Coin"><button class="btn" onclick="sendMsg()">ENVOYER • 1 Coin 📤</button><button class="btn btnY" onclick="sendVocal()">🎤 Vocal • 2 Coins</button></div></div>
+<div id="p-profile" class="page"><div class="card"><h3>👤 Mon Profil</h3><p id="profileInfo"></p><button class="btn" onclick="showPage('settings')">⚙️ Paramètres</button><button class="btn btnR" onclick="logout()">Se Déconnecter</button></div></div>
+<div id="p-settings" class="page"><div class="card"><h3>⚙️ Paramètres</h3>
+<label>Changer mon prénom</label><input id="setName" placeholder="Nouveau prénom">
+<label>Changer mon numéro</label><input id="setPhone" placeholder="Nouveau numéro">
+<label>Changer mon mot de passe</label><input id="setPass" placeholder="Nouveau mot de passe" type="password">
+<label>Ma photo / Emoji</label><select id="setEmoji"><option value="👑">👑 Roi</option><option value="😎">😎 Cool</option><option value="💖">💖 Coeur</option><option value="⚽">⚽ Sport</option><option value="🎤">🎤 Chanteur</option></select>
+<label>Mon compte</label><select id="setPrivate"><option value="public">🌍 Public - tout le monde me voit</option><option value="prive">🔒 Privé - seulement mes amis</option></select>
+<button class="btn btnG" onclick="saveSettings()">ENREGISTRER MES PARAMÈTRES ✅</button>
+<button class="btn btnR" onclick="if(confirm('Tu veux vraiment supprimer ton compte ?')){localStorage.clear();location.reload()}">🗑️ Supprimer mon compte</button>
+</div></div>
+<div class="nav"><div onclick="showPage('home')" class="on" id="n-home">🏠<br>Accueil</div><div onclick="showPage('insta')" id="n-insta">📸<br>InstaLife</div><div onclick="showPage('videos')" id="n-videos">🎬<br>Vidéos</div><div onclick="showPage('chat')" id="n-chat">💬<br>Chat</div><div onclick="showPage('settings')" id="n-settings">⚙️<br>Paramètres</div></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<let USER = JSON.parse(localStorage.getItem('keith_user11')||'null');
+let COINS = parseInt(localStorage.getItem('keith_coins11')||'10');
+let OWNER_NUM = '993563222';
+let myEmoji = localStorage.getItem('keith_emoji11')||'👑';
+function cleanNum(n){ return (n||'').replace(/\D/g,'').replace(/^243/,'').replace(/^0/,''); }
+function isOwner(){ if(!USER) return false; return cleanNum(USER.phone).endsWith(OWNER_NUM); }
+function prettyName(n){ if(!n) return 'Ami'; n=n.trim(); if(n.includes('@')) n=n.split('@')[0]; n=n.replace(/[._-]/g,' '); return n.charAt(0).toUpperCase()+n.slice(1); }
+function saveUser(){ localStorage.setItem('keith_user11', JSON.stringify(USER)); localStorage.setItem('keith_coins11', COINS); }
+function updateUI(){
+  if(!USER) return;
+  let name = prettyName(USER.name);
+  document.getElementById('helloText').innerText = myEmoji+' Bonjour, '+name+(isOwner()?' 👑':'');
+  document.getElementById('helloSub').innerText = isOwner()?'Propriétaire • Coins Illimités':'Bienvenue dans Keith Super App';
+  document.getElementById('coinsText').innerText = isOwner()?'∞ Illimités':COINS+' Coins';
+  document.getElementById('walletCoins').innerText = isOwner()?'∞ Illimités':COINS;
+  document.getElementById('ownerTag').innerHTML = isOwner()?'<span class="ownerBadge">👑 PATRON</span>':'';
+  document.getElementById('myNumText').innerText = USER.phone;
+  document.getElementById('profileInfo').innerHTML = '<b>'+myEmoji+' '+name+'</b><br>'+USER.phone+'<br>Coins: '+(isOwner()?'∞ Illimités':COINS);
+  document.getElementById('setName').value = USER.name; document.getElementById('setPhone').value = USER.phone;
+}
+function doRegister(){
+  let n=document.getElementById('regName').value.trim();
+  let p=document.getElementById('regPhone').value.trim();
+  if(!n||!p){ alert('Mets ton prénom et ton numéro'); return; }
+  USER={name:n,phone:p};
+  if(cleanNum(p).endsWith(OWNER_NUM)){ COINS=999999; alert('👑 Bienvenue PATRON Keith ! Coins Illimités !'); }
+  else { if(!localStorage.getItem('keith_coins11')) COINS=10; alert('Bienvenue '+prettyName(n)+' ! 10 Coins gratuits.'); }
+  saveUser(); showMain();
+}
+function showMain(){ document.getElementById('authPage').style.display='none'; document.getElementById('mainApp').style.display='block'; updateUI(); loadDemo(); }
+function logout(){ localStorage.removeItem('keith_user11'); location.reload(); }
+function showPage(id){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  let el=document.getElementById('p-'+id); if(el) el.classList.add('active');
+  document.querySelectorAll('.nav div').forEach(e=>e.classList.remove('on'));
+  let nav=document.getElementById('n-'+id); if(nav) nav.classList.add('on');
+  window.scrollTo(0,0);
+}
+function useCoins(cost){ if(isOwner()) return true; if(COINS < cost){ alert('PAS ASSEZ DE COINS ! Tu as '+COINS); showPage('wallet'); return false; } COINS -= cost; saveUser(); updateUI(); return true; }
+function saveSettings(){
+  let n=document.getElementById('setName').value.trim();
+  let p=document.getElementById('setPhone').value.trim();
+  let e=document.getElementById('setEmoji').value;
+  let priv=document.getElementById('setPrivate').value;
+  if(n) USER.name=n; if(p) USER.phone=p;
+  myEmoji=e; localStorage.setItem('keith_emoji11', e); localStorage.setItem('keith_private11', priv);
+  saveUser(); updateUI(); alert('✅ Paramètres enregistrés ! Nouveau nom: '+prettyName(USER.name)+' '+e+' Compte: '+priv);
+}
+function postInsta(){
+  if(!useCoins(2)) return;
+  let t=document.getElementById('instaText').value.trim(); if(!t) return alert('Écris quelque chose');
+  let em=document.getElementById('instaEmoji').value;
+  addInstaPost(prettyName(USER.name), myEmoji, em, t);
+  document.getElementById('instaText').value='';
+}
+function addInstaPost(name, emoji, img, text){
+  let d=document.createElement('div'); d.className='card';
+  d.innerHTML='<div class="postHead"><div class="ava">'+emoji+'</div><div><b>'+name+'</b><br><small>Lubumbashi • À l\'instant</small></div><div style="margin-left:auto;cursor:pointer" onclick="alert(\'Options: Signaler • Ne plus voir • Copier lien\')">⋯</div></div><div class="postImg">'+img+'</div><div class="postActions"><span onclick="likeInsta(this)">❤️ <b class="cnt">0</b></span><span onclick="commentInsta(this)">💬</span><span onclick="alert(\'Lien copié !\')">📩</span><span style="margin-left:auto" onclick="alert(\'Enregistré\')">🔖</span></div><p><b>'+name+'</b> '+text+'</p><div class="cmtBox" style="font-size:13px;color:#555"></div><input placeholder="Ajouter un commentaire..." onkeydown="if(event.key===\'Enter\'){this.parentElement.querySelector(\'.cmtBox\').innerHTML+=\'<div><b>'+prettyName(USER.name)+'</b> \'+this.value+\'</div>\';this.value=\'\'}">';
+  document.getElementById('instaFeed').prepend(d);
+}
+function likeInsta(el){ let c=el.querySelector('.cnt'); c.innerText=parseInt(c.innerText)+1; el.style.color='red'; }
+function commentInsta(el){ let inp=el.closest('.card').querySelector('input'); inp.focus(); }
+function viewStory(name){ alert('📸 Story de '+name+' : Bonjour tout le monde ! Regardez ma journée à Lubumbashi ❤️'); }
+function postVideo(){
+  if(!useCoins(3)) return;
+  let t=document.getElementById('vidTitle').value.trim()||'Ma vidéo TikTok';
+  let m=document.getElementById('vidMusic').value;
+  addTikTok(prettyName(USER.name), myEmoji, t, m);
+  document.getElementById('vidTitle').value='';
+}
+function addTikTok(name, emoji, title, music){
+  let d=document.createElement('div'); d.className='tik';
+  d.innerHTML='<div class="vidArea">🎬</div><div class="tikRight"><div onclick="alert(\'Tu suis maintenant '+name+' ✅\')">➕</div><div onclick="likeTik(this)">❤️<br><span class="cnt">0</span></div><div onclick="commentTik(this)">💬<br>0</div><div onclick="alert(\'Lien vidéo copié !\')">↗️</div><div onclick="alert(\'Vidéo enregistrée\')">🔖</div></div><div class="tikBottom"><b>@'+name.toLowerCase()+' '+emoji+'</b><p style="margin:6px 0">'+title+'</p><p style="font-size:12px;opacity:.8">'+music+' • 🎵 Son original</p></div>';
+  document.getElementById('vidFeed').prepend(d);
+}
+function likeTik(el){ let c=el.querySelector('.cnt'); c.innerText=parseInt(c.innerText)+1; el.style.background='red'; }
+function commentTik(el){ let t=prompt('Ton commentaire sur cette vidéo TikTok :'); if(t) alert('✅ Commentaire publié : '+t); }
+function addMusic(){ let f=document.getElementById('musicFile').files[0]; if(!f) return alert('Choisis une musique'); if(!useCoins(1)) return; let url=URL.createObjectURL(f); let d=document.createElement('div'); d.className='card'; d.innerHTML='🎧 '+f.name+' <button onclick="document.getElementById(\'player\').src=\''+url+'\';document.getElementById(\'player\').play()">▶️ Jouer</button>'; document.getElementById('musicList').appendChild(d); document.getElementById('player').src=url; }
+function buyCours(){ if(!useCoins(5)) return; document.getElementById('coursContent').style.display='block'; }
+function saveNote(){ if(!useCoins(1)) return; let t=document.getElementById('noteText').value; if(!t) return; let d=document.createElement('div'); d.className='card'; d.innerText=t; document.getElementById('noteList').prepend(d); document.getElementById('noteText').value=''; }
+function startLive(){ if(!useCoins(10)) return; alert('🔴 Ton LIVE est lancé !'); }
+function buyPack(){ let v=document.getElementById('pack').value; let coins=v.split('|')[0]; document.getElementById('walletMsg').innerText='✅ Demande envoyée au Patron pour '+coins+' Coins. Envoie l\'argent sur 0993563222.'; }
+let db=null, chatUnsub=null, chatId='';
+try{ const firebaseConfig={apiKey:"AIzaSyB-PLACE-TA-CONFIG-ICI",authDomain:"keith-app.firebaseapp.com",projectId:"keith-app",storageBucket:"keith-app.appspot.com",messagingSenderId:"123456",appId:"1:123456:web:abc"}; if(firebaseConfig.apiKey.indexOf('PLACE')===-1){ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); } }catch(e){ db=null; }
+let localMsgs = JSON.parse(localStorage.getItem('keith_chat11')||'[]');
+function connectChat(){
+  let to=document.getElementById('chatTo').value.trim(); if(!to){ alert('Mets le numéro de l\'autre'); return; }
+  let a=cleanNum(USER.phone), b=cleanNum(to); chatId = a<b ? a+'_'+b : b+'_'+a;
+  document.getElementById('chatBox').innerHTML='';
+  if(db){ if(chatUnsub) chatUnsub(); chatUnsub = db.collection('chats').doc(chatId).collection('messages').orderBy('time').onSnapshot(snap=>{ document.getElementById('chatBox').innerHTML=''; snap.forEach(doc=>{ let m=doc.data(); showOneMsg(m.text, m.from===a); }); document.getElementById('chatBox').scrollTop=99999; }); }
+  else { localMsgs.filter(m=>m.chat===chatId).forEach(m=>showOneMsg(m.text, m.from===a)); }
+  alert('✅ CONNECTÉ !');
+}
+function showOneMsg(text, isMe){ let d=document.createElement('div'); d.className='msg '+(isMe?'me':'other'); d.innerText=text; document.getElementById('chatBox').appendChild(d); }
+function sendMsg(){ let t=document.getElementById('chatInput').value.trim(); if(!t) return; if(!chatId){ alert('Clique d\'abord sur CONNECTER'); return; } if(!useCoins(1)) return; let a=cleanNum(USER.phone); if(db){ db.collection('chats').doc(chatId).collection('messages').add({text:t, from:a, time:Date.now()}); } else { localMsgs.push({chat:chatId, text:t, from:a}); localStorage.setItem('keith_chat11', JSON.stringify(localMsgs)); showOneMsg(t,true); } document.getElementById('chatInput').value=''; }
+function sendVocal(){ if(!chatId){ alert('Connecte-toi d\'abord'); return; } if(!useCoins(2)) return; alert('🎤 Vocal envoyé'); }
+function loadDemo(){
+  if(document.getElementById('instaFeed').children.length===0){
+    addInstaPost('Keith','👑','🌍','Bienvenue dans InstaLife ! Comme Instagram mais c\'est à nous 🇨🇩');
+    addInstaPost('Charmante','💖','💖','Belle journée à Lubumbashi ! Qui est là ?');
+  }
+  if(document.getElementById('vidFeed').children.length===0){
+    addTikTok('Keith','👑','Regardez ma nouvelle vidéo 🔥','🎵 Musique Amapiano');
+    addTikTok('Charmante','💖','Danse du jour 💃','🎵 Musique Rumba');
+  }
+}
+if(USER){ showMain(); }
+</script></body></html>
