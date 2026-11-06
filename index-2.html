@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KEITH SUPER APP - FINAL</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#0f0520;color:#fff;padding-bottom:110px;background-image:linear-gradient(180deg,#1a0b2e 0%,#150836 50%,#0f0520 100%)}
+.page{display:none;padding:14px}.page.active{display:block}
+.keithTop{display:flex;justify-content:space-between;align-items:center;padding:6px 4px}
+.keithLogo{font-size:32px;font-weight:900;letter-spacing:1px}
+.coinsPill{background:#2a1a4a;border:1px solid #4a2a7a;padding:8px 14px;border-radius:30px;font-weight:bold;font-size:15px}
+.box{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:14px;margin:12px 0}
+input,select,button,textarea{width:100%;padding:13px;margin:7px 0;border-radius:14px;border:1px solid #4a2a7a;font-size:15px}
+input,select,textarea{background:#2a1a4a;color:#fff}button{background:linear-gradient(90deg,#ffcc00,#c86bff);color:#1a0b2e;font-weight:900;cursor:pointer;border:none}button.green{background:#00c853;color:#fff}button.grey{background:#444}button.purple{background:#8b5cf6;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bigCard{background:linear-gradient(180deg,#2a1a5a,#1a0b3a);border:1px solid #5a3a9a;border-radius:20px;padding:22px 10px;text-align:center;cursor:pointer}
+.bigCard .ico{font-size:42px}.bigCard b{font-size:17px;display:block;margin-top:8px}
+.coin{color:#ffcc00;font-weight:bold}.hidden{display:none}
+.bottomNav{position:fixed;bottom:12px;left:12px;right:12px;background:#2a1a4a;border-radius:22px;display:flex;justify-content:space-around;padding:10px 6px;border:1px solid #4a2a7a;z-index:99}
+.bottomNav div{text-align:center;font-size:11px;cursor:pointer;color:#aaa;padding:6px 10px;border-radius:14px;flex:1}
+.bottomNav div.active{background:#8b5cf6;color:#fff;font-weight:bold}
+.bottomNav div .ico{font-size:22px;display:block}
+.instaTop{display:flex;justify-content:space-between;align-items:center;padding:8px 4px}.instaLogo{font-family:Georgia;font-size:24px;font-style:italic;font-weight:bold}
+.storyRow{display:flex;gap:10px;overflow-x:auto;padding:10px 0}.story{text-align:center;min-width:72px}.story .ring{width:62px;height:62px;border-radius:50%;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);padding:3px;margin:auto}.story .ring span{display:block;width:100%;height:100%;border-radius:50%;background:#222;line-height:56px;font-size:22px;border:2px solid #000}.story p{font-size:11px;margin:4px 0}
+.instaPost{background:rgba(0,0,0,0.3);border-radius:16px;padding:10px;margin:10px 0}.instaPostHead{display:flex;justify-content:space-between;align-items:center}.instaPostHead .user{display:flex;gap:10px;align-items:center}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);display:flex;align-items:center;justify-content:center;font-size:18px}
+.instaPost img,.instaPost video{width:100%;max-height:420px;object-fit:cover;margin:8px 0;border-radius:12px}.instaActions{display:flex;justify-content:space-between;font-size:22px}
+.comment{background:#2a1a4a;padding:8px;border-radius:10px;margin:5px 0;font-size:13px}.tab{display:flex;gap:6px}.tab button{flex:1}
+.chatrow{display:flex;justify-content:space-between;padding:12px;border-bottom:1px solid #333;cursor:pointer}
+.chatMsg{background:#2a1a4a;padding:8px;border-radius:12px;margin:5px 0;max-width:85%}.chatMsg.mine{background:#8b5cf6;color:#fff;margin-left:auto}
+.post{background:#2a1a4a;border-radius:14px;padding:10px;margin:10px 0}.post img,.post video{width:100%;border-radius:12px;max-height:350px;object-fit:cover}
+.patronBadge{background:#ffcc00;color:#000;padding:4px 10px;border-radius:20px;font-weight:bold;font-size:12px}
+.notif{position:fixed;top:60px;right:10px;left:10px;background:#00c853;color:#fff;padding:12px;border-radius:12px;z-index:999;text-align:center;font-weight:bold;display:none}
+.ecoToggle{width:220px;height:62px;background:#8b5cf6;border-radius:40px;margin:14px auto;position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-weight:bold;cursor:pointer}
+.ecoKnob{position:absolute;width:62px;height:62px;background:#e9a8ff;border-radius:50%;top:0;transition:0.3s}.ecoKnob.on{left:0}.ecoKnob.off{left:158px}
+.payRow{display:flex;gap:10px;align-items:center;background:#2a1a4a;border-radius:14px;padding:12px;margin:8px 0;border:2px solid transparent;cursor:pointer}.payRow.sel{border-color:#c86bff;background:#3a2060}
+.payCircle{width:52px;height:52px;border-radius:50%;background:#3a2060;display:flex;align-items:center;justify-content:center;font-weight:900;color:#c86bff;border:2px solid #c86bff}
+.payRadio{width:22px;height:22px;border:2px solid #888;border-radius:50%;margin-left:auto}.payRow.sel .payRadio{background:#ff00ff;border-color:#ff00ff}
+.bonusBanner{background:linear-gradient(90deg,#2a1a4a,#3a2060);border:1px solid #ffcc00;border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
+.bookCard{background:linear-gradient(180deg,#2a1a5a,#1a0b3a);border:1px solid #5a3a9a;border-radius:16px;padding:14px;margin:10px 0}
+.bookCard .bookIcon{font-size:32px}
+</style>
+</head>
+<body>
+<div id="notifBar" class="notif"></div>
+
+<div id="p-accueil" class="page active">
+<div class="keithTop"><div class="keithLogo">✨KEITH</div><div class="coinsPill">🟡 <span id="coinsTop">300</span> coins <span id="patronBadge" class="patronBadge" style="display:none"></span></div></div>
+<h2 style="margin:8px 4px 2px">Bonjour<span id="welcomeComma"></span> <span id="welcomeName"></span> 👋</h2>
+<p style="color:#b8a6d6;margin:4px">Que veux-tu explorer aujourd'hui ?</p>
+<p id="welcomeUser" style="font-size:13px;color:#ffcc00">Inscris-toi pour recevoir 300 Coins bonus</p>
+<p id="liveStatus" style="font-size:12px;color:#aaa">📡 En direct : En attente...</p>
+<p id="saveStatus" style="font-size:11px;color:#888">💾 Sauvegarde : Activée</p>
+<div class="grid2">
+<div class="bigCard" onclick="go('chats')"><div class="ico">💬</div><b>Chats</b></div>
+<div class="bigCard" onclick="go('insta')"><div class="ico">📸✨</div><b>Instalife</b></div>
+<div class="bigCard" onclick="go('videos')"><div class="ico">🎬</div><b>Video Keith</b></div>
+<div class="bigCard" onclick="go('youtube')"><div class="ico">▶️</div><b>Youtulife</b></div>
+<div class="bigCard" onclick="go('musique')"><div class="ico">🎵</div><b>Musique</b></div>
+<div class="bigCard" onclick="go('bingo')"><div class="ico">📖</div><b>Bingo Book</b></div>
+</div>
+<div class="box"><b>⚙️ Économie rapide</b><p id="ecoTxt">Mode OFF : Normal</p><button class="purple" onclick="go('economie')">Ouvrir Economie</button></div>
+</div>
+
+<div id="p-economie" class="page">
+<div class="keithTop"><div class="keithLogo">✨KEITH</div><div class="coinsPill">🟡 <span id="coinsEco">300</span> coins</div></div>
+<h1 style="text-align:center;margin:6px 0">Economie</h1><p style="text-align:center;color:#b8a6d6;margin:0">Gérez votre consommation internet</p>
+<div class="box" style="text-align:center;padding:22px"><div style="width:92px;height:92px;background:#2a1a4a;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;font-size:44px">🍃✨</div><h2>Mode Economie</h2><div class="ecoToggle" onclick="toggleEcoClick()"><span>ON</span><div id="ecoKnob" class="ecoKnob off"></div><span>OFF</span></div><p style="text-align:left">✅ <b>ON = diminution de consommation de forfait internet</b></p><p style="color:#aaa">ⓘ OFF = fonctionnement normal</p><div style="background:#2a1a4a;border-radius:12px;padding:12px;text-align:left">💡 En activant le Mode Economie, vous réduisez la consommation de données en limitant les actualisations en arrière-plan et la lecture vidéo HD.</div></div>
+<button class="grey" onclick="go('accueil')" style="width:100%;padding:13px;border-radius:14px;background:#444;color:#fff;font-weight:bold">⬅ Retour Accueil</button>
+</div>
+
+<div id="p-portefeuille" class="page">
+<div style="display:flex;justify-content:space-between;align-items:center"><span onclick="go('accueil')" style="font-size:22px;cursor:pointer">‹</span><b style="font-size:20px">Portefeuille</b><span>🔔 👤</span></div>
+<div class="box" style="background:linear-gradient(135deg,#5a2a9a,#8b5cf6);padding:18px"><p style="margin:0;color:#e0cfff">Solde disponible</p><h1 style="margin:4px 0;font-size:36px">🟡 <span id="coins3">300</span> coins</h1><p style="text-align:right;margin:0;color:#e0cfff">≈ <span id="coinsFC">300</span> FC</p></div>
+<div id="patronPortefeuille" class="box hidden" style="border:2px solid #ffcc00"><b>👑 TU ES ILLIMITÉ</b><p>Tu ne paies jamais.</p></div>
+<h2>Recharger des coins</h2>
+<div class="payRow" id="pay100" onclick="selectPay(100)"><div class="payCircle">100</div><div><b style="font-size:19px">100 coins</b><br><span style="color:#aaa">100 FC</span></div><div class="payRadio"></div></div>
+<div class="payRow sel" id="pay500" onclick="selectPay(500)"><div class="payCircle">500</div><div><b style="font-size:19px">500 coins</b><br><span style="color:#aaa">500 FC</span></div><div class="payRadio"></div></div>
+<div class="payRow" id="pay1000" onclick="selectPay(1000)"><div class="payCircle">1000</div><div><b style="font-size:19px">1000 coins</b><br><span style="color:#aaa">1000 FC</span></div><div class="payRadio"></div></div>
+<div class="payRow" id="pay2000" onclick="selectPay(2000)"><div class="payCircle">2000</div><div><b style="font-size:19px">2000 coins</b><br><span style="color:#aaa">2000 FC</span></div><div class="payRadio"></div></div>
+<h2>Moyen de paiement</h2><p style="color:#b8a6d6">Numéro de téléphone</p><input id="payNum" placeholder="+243 | Entrez le numéro" value="+243 "><p style="font-size:13px;color:#b8a6d6">Paiement via Airtel Money — transaction sécurisée</p><button onclick="showPatron()" style="background:linear-gradient(90deg,#c86bff,#8b5cf6);padding:16px;font-size:18px">PAYER</button>
+<div id="patronBox" class="box hidden"><b>Numéro pour payer :</b><p id="patronNum" style="font-size:20px;color:#ffcc00">...</p><button onclick="copyNum()">📋 Copier</button><button class="green" onclick="userPaid()">✅ J'ai payé</button><button class="blue" id="validateBtn" onclick="validatePay()">✅ VALIDER</button></div>
+<div class="box"><b>📜 Historique</b><p id="hist">Aucun paiement.</p></div><button class="grey" onclick="go('accueil')">⬅ Retour</button>
+</div>
+
+<div id="p-profil" class="page"><div class="keithTop"><div class="keithLogo">✨KEITH</div><div class="coinsPill">🟡 <span id="coinsProfil">300</span> coins</div></div><h1 style="text-align:center">Profil</h1><div class="box"><p style="text-align:center">👤</p><input id="profNom" placeholder="Nom"><input id="profApropos" placeholder="À propos"><input id="profStatut" placeholder="Statut"><button onclick="saveProfil()">💾 Enregistrer</button><p id="profShow"></p></div><div class="box"><b>🔒 Cacher mon numéro = 50 Coins</b><button onclick="doAction('cacher',50)">Cacher -50 Coins</button></div><div class="box"><b>⚙️ Paramètres</b><p id="notifSettingTxt">Notifications : ON</p><button onclick="toggleNotif()">Activer / Désactiver</button></div><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+
+<div id="p-insta" class="page"><div class="keithTop"><div class="keithLogo">InstaLife</div><div>❤️ 💬 ➕</div></div><input id="instaSearch" placeholder="🔍 Rechercher..." oninput="renderPosts()"><div class="storyRow"><div class="story"><div class="ring"><span>➕</span></div><p>Votre story</p></div><div class="story"><div class="ring"><span>😍</span></div><p>maman</p></div><div class="story"><div class="ring"><span>🔥</span></div><p>ami</p></div></div><div class="box" style="border:2px solid #c86bff"><b>➕ PUBLIER - COMME INSTAGRAM</b><div class="tab"><button id="btnPhoto" class="green" onclick="setPublishType('photo')">📸 PHOTO</button><button id="btnVideo" onclick="setPublishType('video')">🎬 VIDÉO / REEL</button></div><input type="file" id="instaFile" accept="image/*,video/*"><textarea id="instaText" placeholder="Écris ta légende..."></textarea><button class="green" onclick="publishInsta()">📸 PUBLIER - 2 Coins</button><p id="instaPublishMsg" style="color:#ffcc00"></p></div><div style="display:flex;justify-content:space-around;padding:10px 0"><span onclick="instaFilter('all')">🏠 Feed</span><span onclick="instaFilter('photo')">🖼️ Photos</span><span onclick="instaFilter('video')">🎬 Reels</span></div><div id="instaFeed"></div><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+<div id="p-videos" class="page"><h2>🎬 Video Keith</h2><input id="videoSearch" placeholder="🔍 Rechercher..." oninput="renderPosts()"><div class="box"><b>➕ PUBLIER VIDÉO</b><input type="file" id="videoFile" accept="video/*"><textarea id="videoText" placeholder="Titre..."></textarea><button class="green" onclick="publishPost('video')">🎬 PUBLIER - 2 Coins</button></div><div id="videoFeed"></div><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+<div id="p-chats" class="page"><h2>💬 Chats</h2><div class="box"><b>➕ NOUVEAU CHAT</b><input id="newChatName" placeholder="Nom du groupe..."><button class="green" onclick="createChat()">➕ CRÉER CHAT</button></div><div id="chatList"></div><div id="chatBox" class="box hidden"><b id="chatName"></b><div id="msgs" style="max-height:300px;overflow-y:auto"></div><input id="msgInput" placeholder="Message... 1 Coin"><button onclick="sendRealMsg()">Envoyer -1 Coin</button><button onclick="startCall('vocal')">🎤 Appel Vocal -5</button><button onclick="startCall('video')">📹 Appel Vidéo -10</button><div id="callBox" class="hidden"><video id="callVideo" autoplay playsinline muted style="width:100%;border-radius:12px;background:#000"></video><p id="callStatus"></p><button style="background:#ff1744" onclick="endCall()">🔴 Raccrocher</button></div></div><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+<div id="p-youtube" class="page"><h2>▶️ Youtulife</h2><input id="ytSearch" placeholder="🔍 Rechercher..." oninput="renderPosts()"><div class="box"><b>➕ PUBLIER VIDÉO</b><input type="file" id="ytFile" accept="video/*,image/*"><textarea id="ytText" placeholder="Titre..."></textarea><button class="green" onclick="publishPost('youtube')">▶️ PUBLIER - 2 Coins</button></div><div id="ytFeed"></div><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+<div id="p-musique" class="page"><h2>🎵 Musique</h2><input type="file" accept="audio/*" onchange="playMusic(event)"><audio id="audio" controls style="width:100%"></audio><button onclick="document.getElementById('audio').play()">▶️ Jouer</button><button onclick="document.getElementById('audio').pause()">⏸️ Pause</button><button class="grey" onclick="go('accueil')">⬅ Retour</button></<!-- ===== BINGO BOOK AVEC LIVRES GRATUITS ===== -->
+<div id="p-bingo" class="page">
+<h2>📚 Bingo Book - Livres Gratuits</h2>
+<p style="color:#b8a6d6">Tous ces livres sont GRATUITS - Livres libres, sans droit d'auteur + tes romans</p>
+<input id="bookSearch" placeholder="🔍 Rechercher un livre gratuit..." oninput="filterBooks()">
+<div id="bingoList"></div>
+<div class="box"><b>📖 Ton histoire à toi ?</b><p>Tu veux publier ton roman ? Envoie-le moi et je l'ajoute ici.</p></div>
+<button class="grey" onclick="go('accueil')">⬅ Retour</button>
+</div>
+
+<div id="p-inscription" class="page"><div style="text-align:center"><div class="keithLogo" style="font-size:36px">✨KEITH</div></div><div class="bonusBanner"><span style="font-size:36px">🎁</span><div><b>Bonus 300 coins gratuits offerts à l'inscription</b><br><small style="color:#b8a6d6">Récupérez vos 300 coins immédiatement après inscription</small></div></div><h1 style="text-align:center;margin:10px 0 0">Inscription</h1><p style="text-align:center;color:#c9a6ff;margin:4px">Créez votre compte pour commencer</p><p style="text-align:center;color:#b8a6d6">Nom</p><input id="insNom" placeholder="👤 Entrez votre nom"><p style="text-align:center;color:#b8a6d6">Numéro de téléphone</p><input id="insNum" placeholder="📞 +243 99 35 63 222"><p style="text-align:center;color:#b8a6d6">Mot de passe</p><input id="insPass" type="password" placeholder="🔒 Créez un mot de passe sécurisé"><select id="paysSel"><option>RDC - +243</option><option>Congo - +242</option><option>France - +33</option><option>USA - +1</option></select><select id="langSel" onchange="changeLang()"><option value="fr">Français</option><option value="en">English</option><option value="ln">Lingala</option><option value="sw">Swahili</option></select><button onclick="inscrire()" style="padding:16px;font-size:19px">S'INSCRIRE</button><p id="insMsg" style="text-align:center"></p><p style="text-align:center;font-size:13px">En vous inscrivant, vous acceptez nos <br><u style="color:#ffcc00">Conditions d'utilisation</u></p><button class="grey" onclick="go('accueil')">⬅ Retour</button></div>
+
+<div class="bottomNav"><div id="nav-accueil" class="active" onclick="go('accueil')"><span class="ico">🏠</span>Accueil</div><div id="nav-economie" onclick="go('economie')"><span class="ico">📊</span>Economie</div><div id="nav-portefeuille" onclick="go('portefeuille')"><span class="ico">👛</span>Portefeuille</div><div id="nav-profil" onclick="go('profil')"><span class="ico">👤</span>Profil</div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+const CONFIG={PATRON_PHONE:"+243 993563222",PATRON_NUMBERS:["0993563222","993563222","+243993563222","+243 993563222","243993563222"],FIREBASE:{apiKey:"AIzaSyDmWKvBz4Fhld3bolsGEZ64GS-VCbdJN8s",authDomain:"keith-app-7cb50.firebaseapp.com",projectId:"keith-app-7cb50",storageBucket:"keith-app-7cb50.firebasestorage.app",messagingSenderId:"798947506707",appId:"1:798947506707:web:3d57f45952f733031f9de6",measurementId:"G-CV94YXTZ4R"},PRICES:{100:100,500:500,1000:1000,2000:2000}};
+let db=null; try{firebase.initializeApp(CONFIG.FIREBASE); db=firebase.firestore();}catch(e){}
+let coins=parseInt(localStorage.getItem('keith_coins')||'300'); let eco=localStorage.getItem('keith_eco')==='ON'; let isPatron=localStorage.getItem('keith_patron')==='oui'; let pendingCoins=500, publishType='photo', instaFilterType='all', currentChatId=null, currentChatName='', localStream=null, allPosts=[], allChats=[];
+if(isPatron) coins=999999999;
+function changeLang(){ localStorage.setItem('keith_lang',document.getElementById('langSel').value); alert('Langue changée !'); }
+function showNotif(m){ let b=document.getElementById('notifBar'); b.textContent=m; b.style.display='block'; setTimeout(()=>b.style.display='none',4000); }
+function toggleNotif(){ alert('Notifications changées'); }
+function saveAll(){ localStorage.setItem('keith_coins',coins); localStorage.setItem('keith_eco',eco?'ON':'OFF'); localStorage.setItem('keith_patron',isPatron?'oui':'non'); document.getElementById('saveStatus').textContent='💾 Sauvegardé : '+new Date().toLocaleString()+' - Coins: '+(isPatron?'ILLIMITÉ ♾️':coins); if(db){ let u=localStorage.getItem('keith_user_num')||'anonyme'; db.collection('users').doc(u).set({coins:isPatron?999999999:coins,patron:isPatron,eco:eco?'ON':'OFF',updatedAt:new Date().toISOString()},{merge:true}).catch(()=>{}); } updateUI(); }
+function updateUI(){
+  let d=isPatron?'ILLIMITÉ ♾️':coins;
+  document.getElementById('coinsTop').textContent=d; document.getElementById('coinsEco').textContent=d; document.getElementById('coinsProfil').textContent=d; document.getElementById('coins3').textContent=d; document.getElementById('coinsFC').textContent=isPatron?'∞':coins;
+  let n=localStorage.getItem('keith_user_nom')||'';
+  document.getElementById('welcomeName').textContent=n;
+  document.getElementById('welcomeComma').textContent=n?',':'';
+  if(!n){ document.getElementById('welcomeUser').textContent='Inscris-toi pour recevoir 300 Coins bonus'; }
+  else { document.getElementById('welcomeUser').textContent='Bon retour '+n+' ! Coins: '+(isPatron?'ILLIMITÉ ♾️':coins); }
+  let badge=document.getElementById('patronBadge'); if(isPatron){ badge.style.display='inline-block'; badge.textContent='👑 PATRON'; } else badge.style.display='none';
+  document.getElementById('patronPortefeuille').classList.toggle('hidden',!isPatron);
+  let v=document.getElementById('validateBtn'); if(v) v.style.display=isPatron?'block':'none';
+  document.getElementById('ecoKnob').className='ecoKnob '+(eco?'on':'off');
+  document.getElementById('ecoTxt').textContent=eco?'Mode ON : Diminution de forfait':'Mode OFF : Normal';
+}
+function isPatronNumber(num){ let c=num.replace(/[\s+]/g,''); return CONFIG.PATRON_NUMBERS.some(p=>p.replace(/[\s+]/g,'')===c); }
+function checkCoins(cost){ if(isPatron) return true; if(coins<=0){ alert('❌ TES COINS SONT TERMINÉS ! Va dans Portefeuille.'); go('portefeuille'); return false; } if(coins<cost){ alert('❌ Pas assez ! Il te faut '+cost+' Coins. Il te reste '+coins); go('portefeuille'); return false; } return true; }
+function go(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); let el=document.getElementById('p-'+id); if(el) el.classList.add('active'); document.querySelectorAll('.bottomNav div').forEach(d=>d.classList.remove('active')); let nav=document.getElementById('nav-'+id); if(nav) nav.classList.add('active'); window.scrollTo(0,0); }
+function toggleEcoClick(){ eco=!eco; saveAll(); alert(eco?'Économie ON !':'Économie OFF !'); renderPosts(); }
+function selectPay(n){ pendingCoins=n; [100,500,1000,2000].forEach(x=>document.getElementById('pay'+x).classList.toggle('sel',x===n)); }
+function setPublishType(t){ publishType=t; document.getElementById('btnPhoto').className=t==='photo'?'green':''; document.getElementById('btnVideo').className=t==='video'?'green':''; document.getElementById('instaFile').accept=t==='photo'?'image/*':'video/*'; document.getElementById('instaPublishMsg').textContent=t==='photo'?'Tu vas publier une PHOTO 📸':'Tu vas publier une VIDÉO / REEL 🎬'; }
+function instaFilter(t){ instaFilterType=t; renderPosts(); }
+function publishInsta(){ if(!checkCoins(2)) return; let f=document.getElementById('instaFile'); let txt=document.getElementById('instaText').value.trim()||'Ma publication InstaLife 🔥'; let file=f.files[0]; let author=localStorage.getItem('keith_user_nom')||'Utilisateur'; if(!file){ alert('Choisis une PHOTO ou VIDÉO !'); return; } let r=new FileReader(); r.onload=e=>{ let isV=file.type.startsWith('video')||publishType==='video'; let post={type:'insta',author,text:txt,media:e.target.result,isVideo:isV,likes:0,comments:[],date:new Date().toISOString(),timestamp:Date.now()}; if(db) db.collection('posts').add(post).then(()=>showNotif('✅ Publié !')); else addLocalPost(post); if(!isPatron) coins-=2; saveAll(); document.getElementById('instaText').value=''; f.value=''; loadPosts(); }; r.readAsDataURL(file); }
+function publishPost(type){ if(!checkCoins(2)) return; let fi=type==='video'?document.getElementById('videoFile'):document.getElementById('ytFile'); let ti=type==='video'?document.getElementById('videoText'):document.getElementById('ytText'); let txt=ti.value.trim()||'Ma vidéo 🔥'; let file=fi.files[0]; let author=localStorage.getItem('keith_user_nom')||'Utilisateur'; if(!file){ alert('Choisis une vidéo !'); return; } let r=new FileReader(); r.onload=e=>{ let post={type,author,text:txt,media:e.target.result,isVideo:file.type.startsWith('video'),likes:0,comments:[],date:new Date().toISOString(),timestamp:Date.now()}; if(db) db.collection('posts').add(post); else addLocalPost(post); if(!isPatron) coins-=2; saveAll(); ti.value=''; fi.value=''; loadPosts(); }; r.readAsDataURL(file); }
+function addLocalPost(p){ let l=JSON.parse(localStorage.getItem('keith_posts')||'[]'); l.unshift(p); localStorage.setItem('keith_posts',JSON.stringify(l)); }
+function loadPosts(){ if(db){ db.collection('posts').orderBy('timestamp','desc').limit(100).onSnapshot(snap=>{ allPosts=[]; snap.forEach(d=>{ let dd=d.data(); dd.id=d.id; allPosts.push(dd); }); renderPosts(); document.getElementById('liveStatus').textContent='📡 En direct : '+allPosts.length+' publications'; },()=>loadLocalPosts()); } else loadLocalPosts(); }
+function loadLocalPosts(){ allPosts=JSON.parse(localStorage.getItem('keith_posts')||'[]'); renderPosts(); }
+function renderPosts(){
+  let qI=(document.getElementById('instaSearch')?.value||'').toLowerCase(); let instaDiv=document.getElementById('instaFeed'); let ip=allPosts.filter(p=>p.type==='insta'); if(instaFilterType==='photo') ip=ip.filter(p=>!p.isVideo); if(instaFilterType==='video') ip=ip.filter(p=>p.isVideo); if(qI) ip=ip.filter(p=>(p.text+' '+p.author).toLowerCase().includes(qI));
+  instaDiv.innerHTML=ip.length===0?'<div class="instaPost"><p>Photo du jour à Lubumbashi 🔥 - Exemple</p><img src="https://picsum.photos/400/320"></div>':ip.map(p=>instaPostHTML(p)).join('');
+  let qV=(document.getElementById('videoSearch')?.value||'').toLowerCase(); let vDiv=document.getElementById('videoFeed'); let vp=allPosts.filter(p=>p.type==='video'); if(qV) vp=vp.filter(p=>(p.text+' '+p.author).toLowerCase().includes(qV)); vDiv.innerHTML=vp.length===0?'<div class="post">Aucune vidéo.</div>':vp.map(p=>postHTML(p)).join('');
+  let qY=(document.getElementById('ytSearch')?.value||'').toLowerCase(); let yDiv=document.getElementById('ytFeed'); let yp=allPosts.filter(p=>p.type==='youtube'); if(qY) yp=yp.filter(p=>(p.text+' '+p.author).toLowerCase().includes(qY)); yDiv.innerHTML=yp.length===0?'<div class="post"><b>KEITH TV</b><p>Lubumbashi la belle</p><img src="https://picsum.photos/400/220"></div>':yp.map(p=>postHTML(p)).join('');
+}
+function instaPostHTML(p){ let m=p.isVideo?'<video src="'+p.media+'" controls></video>':'<img src="'+p.media+'">'; let c=(p.comments||[]).map(x=>'<div class="comment"><b>'+x.author+':</b> '+x.text+'</div>').join(''); let id=p.id||p.timestamp; return '<div class="instaPost"><div class="instaPostHead"><div class="user"><div class="avatar">'+p.author.charAt(0).toUpperCase()+'</div><div><b>@'+p.author+'</b></div></div></div><p>'+p.text+'</p>'+m+'<p><b>'+(p.likes||0)+' J\'aime</b></p><button onclick="likePost(\''+id+'\')">❤️ Like -2</button><input id="cmt-'+id+'" placeholder="Commentaire..."><button onclick="commentPost(\''+id+'\')">💬 Commenter -3</button><div>'+c+'</div></div>'; }
+function postHTML(p){ let m=p.isVideo?'<video src="'+p.media+'" controls></video>':'<img src="'+p.media+'">'; let id=p.id||p.timestamp; return '<div class="post"><b>@'+p.author+'</b><p>'+p.text+'</p>'+m+'<button onclick="likePost(\''+id+'\')">❤️ Like -2</button><input id="cmt-'+id+'" placeholder="Commentaire..."><button onclick="commentPost(\''+id+'\')">💬 Commenter -3</button></div>'; }
+function likePost(id){ if(!checkCoins(2)) return; if(!isPatron) coins-=2; saveAll(); let p=allPosts.find(x=>String(x.id||x.timestamp)==String(id)); if(p&&db&&p.id) db.collection('posts').doc(p.id).update({likes:(p.likes||0)+1}); else if(p){ p.likes=(p.likes||0)+1; localStorage.setItem('keith_posts',JSON.stringify(allPosts)); renderPosts(); } }
+function commentPost(id){ let inp=document.getElementById('cmt-'+id); if(!inp||!inp.value.trim()){ alert('Écris un commentaire !'); return; } if(!checkCoins(3)) return; if(!isPatron) coins-=3; saveAll(); let a=localStorage.getItem('keith_user_nom')||'Utilisateur'; let c={author:a,text:inp.value.trim()}; let p=allPosts.find(x=>String(x.id||x.timestamp)==String(id)); if(p&&db&&p.id) db.collection('posts').doc(p.id).update({comments:[...(p.comments||[]),c]}); else if(p){ p.comments=[...(p.comments||[]),c]; localStorage.setItem('keith_posts',JSON.stringify(allPosts)); renderPosts(); } inp.value=''; }
+function createChat(){ let n=document.getElementById('newChatName').value.trim()||('Chat '+new Date().toLocaleTimeString()); let a=localStorage.getItem('keith_user_nom')||'Utilisateur'; if(db) db.collection('chats').add({name:n,author:a,createdAt:Date.now(),lastMsg:'Chat créé',lastTime:new Date().toISOString()}); }
+function loadChats(){ if(!db) return; db.collection('chats').orderBy('createdAt','desc').onSnapshot(snap=>{ allChats=[]; snap.forEach(d=>{ let dd=d.data(); dd.id=d.id; allChats.push(dd); }); let div=document.getElementById('chatList'); if(allChats.length===0){ div.innerHTML='<div class="chatrow" onclick="openChat(\'general\',\'Groupe Général\')"><span><b>💬 Groupe Général</b></span></div>'; return; } div.innerHTML=allChats.map(c=>'<div class="chatrow" onclick="openChat(\''+c.id+'\',\''+c.name.replace(/\'/g,'')+'\')"><span><b>'+c.name+'</b></span></div>').join(''); }); }
+function openChat(id,name){ currentChatId=id; currentChatName=name; document.getElementById('chatBox').classList.remove('hidden'); document.getElementById('chatName').textContent='Chat avec '+currentChatName; if(db) db.collection('chats').doc(currentChatId).collection('messages').orderBy('timestamp','asc').onSnapshot(snap=>{ let h=''; snap.forEach(d=>{ let m=d.data(); let me=m.author===(localStorage.getItem('keith_user_nom')||''); h+='<div class="chatMsg '+(me?'mine':'')+'"><b>'+m.author+':</b><br>'+m.text+'</div>'; }); document.getElementById('msgs').innerHTML=h||'<p>Aucun message.</p>'; }); }
+function sendRealMsg(){ let v=document.getElementById('msgInput').value.trim(); if(!v) return; if(!checkCoins(1)) return; if(!isPatron) coins-=1; saveAll(); let a=localStorage.getItem('keith_user_nom')||'Utilisateur'; if(db){ let gid=currentChatId||'general'; db.collection('chats').doc(gid).set({name:currentChatName||'Groupe Général',createdAt:Date.now(),lastMsg:v},{merge:true}); db.collection('chats').doc(gid).collection('messages').add({text:v,author:a,date:new Date().toISOString(),timestamp:Date.now()}); } document.getElementById('msgInput').value=''; }
+async function startCall(type){ let cost=type==='vocal'?5:10; if(!checkCoins(cost)) return; if(!isPatron) coins-=cost; saveAll(); document.getElementById('callBox').classList.remove('hidden'); try{ localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:type==='video'}); document.getElementById('callVideo').srcObject=localStream; document.getElementById('callStatus').textContent='✅ Appel en cours !'; }catch(e){ document.getElementById('callStatus').textContent='❌ Autorise caméra / micro'; } }
+function endCall(){ if(localStream) localStream.getTracks().forEach(t=>t.stop()); document.getElementById('callBox').classList.add('hidden'); }
+function doAction(t,c){ if(!checkCoins(c)) return; if(!isPatron) coins-=c; saveAll(); alert('✅ Réussi ! -'+c+' Coins'); }
+function playMusic(e){ let f=e.target.files[0]; let a=document.getElementById('audio'); a.src=URL.createObjectURL(f); a.play(); }
+function showPatron(){ document.getElementById('patronBox').classList.remove('hidden'); document.getElementById('patronNum').textContent=CONFIG.PATRON_PHONE; }
+function copyNum(){ navigator.clipboard.writeText(CONFIG.PATRON_PHONE); alert('Numéro copié'); }
+function userPaid(){ if(!pendingCoins){ alert('Choisis un pack.'); return; } document.getElementById('hist').textContent='En attente : +'+pendingCoins+' Coins.'; alert('✅ Merci ! Tu as payé.'); }
+function validatePay(){ if(!isPatron){ alert('Seul le propriétaire peut valider.'); return; } coins+=pendingCoins; saveAll(); alert('✅ Validé ! +'+pendingCoins); }
+function saveProfil(){ let n=document.getElementById('profNom').value; document.getElementById('profShow').textContent='Profil enregistré : '+n; saveAll(); }
+function inscrire(){
+  let num=document.getElementById('insNum').value.trim(); let nom=document.getElementById('insNom').value.trim(); let pass=document.getElementById('insPass').value.trim();
+  if(num.length<6){ alert('Entre ton vrai numéro'); return; } if(!nom){ alert('Entre ton nom'); return; } if(pass.length<4){ alert('Mot de passe 4 caractères min'); return; }
+  if(localStorage.getItem('keith_inscrit')){ alert('Tu es déjà inscrit !'); return; }
+  localStorage.setItem('keith_inscrit','oui'); localStorage.setItem('keith_user_num',num); localStorage.setItem('keith_user_nom',nom); localStorage.setItem('keith_user_pass',pass);
+  if(isPatronNumber(num)){ isPatron=true; coins=999999999; saveAll(); document.getElementById('insMsg').textContent='👑 Bienvenue '+nom+' ! Tu es ILLIMITÉ ♾️ !'; alert('👑 Bienvenue ! Tu es ILLIMITÉ !'); }
+  else { coins+=300; saveAll(); document.getElementById('insMsg').textContent='✅ Bienvenue '+nom+' ! +300 Coins !'; alert('Bienvenue ! +300 Coins !'); }
+  go('accueil');
+}
+// ===== BINGO BOOKS - LIVRES GRATUITS =====
+let ALL_BOOKS = [
+  {t:"Les Fables de La Fontaine", a:"Jean de La Fontaine", c:"Le Corbeau et le Renard, La Cigale et la Fourmi, Le Lièvre et la Tortue. Chapitre 1 : Maître Corbeau, sur un arbre perché, tenait en son bec un fromage...", icon:"🦊", free:true},
+  {t:"Contes de Perrault", a:"Charles Perrault", c:"Cendrillon, Le Petit Chaperon Rouge, La Belle au Bois Dormant. Chapitre 1 : Il était une fois une petite fille qu'on appelait Cendrillon...", icon:"👑", free:true},
+  {t:"Les Trois Mousquetaires", a:"Alexandre Dumas", c:"Chapitre 1 : Le premier lundi du mois d'avril 1625, le bourg de Meung vit débarquer un jeune homme de 18 ans, D'Artagnan...", icon:"⚔️", free:true},
+  {t:"Le Comte de Monte-Cristo", a:"Alexandre Dumas", c:"Chapitre 1 : Le 24 février 1815, la vigie de Notre-Dame de la Garde signala le trois-mâts Le Pharaon...", icon:"💰", free:true},
+  {t:"Voyage au Centre de la Terre", a:"Jules Verne", c:"Chapitre 1 : Le 24 mai 1863, un dimanche, mon oncle, le professeur Lidenbrock, rentra précipitamment...", icon:"🌋", free:true},
+  {t:"Le Tour du Monde en 80 Jours", a:"Jules Verne", c:"Chapitre 1 : Phileas Fogg était un gentleman londonien, exact, mystérieux, qui paria qu'il ferait le tour du monde en 80 jours...", icon:"🌍", free:true},
+  {t:"Alice au Pays des Merveilles", a:"Lewis Carroll", c:"Chapitre 1 : Alice s'ennuyait au bord de la rivière quand elle vit un Lapin Blanc avec une montre...", icon:"🐰", free:true},
+  {t:"Contes de Grimm", a:"Frères Grimm", c:"Blanche-Neige, Hansel et Gretel, Cendrillon. Chapitre 1 : Il était une fois une reine qui se piqua le doigt...", icon:"🍎", free:true},
+  {t:"Le Petit Prince", a:"Antoine de Saint-Exupéry", c:"Chapitre 1 : Quand j'avais six ans, j'ai vu une image magnifique d'un serpent boa qui avalait un fauve...", icon:"⭐", free:true},
+  {t:"L'amour à Lubumbashi", a:"KEITH - Ton roman", c:"Chapitre 1 : Il était une fois à Lubumbashi, une fille qui rêvait d'amour...", icon:"❤️", free:false},
+  {t:"Le Rêve de Keith", a:"KEITH - Ton roman", c:"Chapitre 1 : Tout commence avec un téléphone et un rêve...", icon:"📱", free:false},
+  {t:"La Fille de Kinshasa", a:"KEITH - Ton roman", c:"Chapitre 1 : Elle quitte Kinshasa pour chercher sa vie...", icon:"🌆", free:false}
+];
+function loadBingo(){ renderBooks(ALL_BOOKS); }
+function filterBooks(){ let q=(document.getElementById('bookSearch').value||'').toLowerCase(); let f=ALL_BOOKS.filter(b=>(b.t+' '+b.a+' '+b.c).toLowerCase().includes(q)); renderBooks(f); }
+function renderBooks(list){ document.getElementById('bingoList').innerHTML=list.map((b,i)=>'<div class="bookCard"><div style="display:flex;gap:10px"><span class="bookIcon">'+b.icon+'</span><div><b>'+b.t+'</b><br><small style="color:#c9a6ff">'+b.a+' • '+(b.free?'GRATUIT ✅':'KEITH')+'</small><p style="font-size:13px;color:#ddd">'+b.c+'</p></div></div><div style="display:flex;gap:8px"><button class="green" onclick="readBook('+ALL_BOOKS.indexOf(b)+')">📖 Lire Gratuit</button><button onclick="listenBook('+ALL_BOOKS.indexOf(b)+')">🎧 Écouter Gratuit</button></div></div>').join(''); }
+function readBook(i){ let b=ALL_BOOKS[i]; let story=b.c+'\n\n--- Suite ---\nChapitre 2 : Et l\'histoire continue... Tu peux lire ce livre gratuitement, il est libre. Si tu veux la suite complète, dis à KEITH de l\'ajouter.'; alert('📖 LECTURE : '+b.t+'\n\n'+story); if('speechSynthesis' in window){} }
+function listenBook(i){ let b=ALL_BOOKS[i]; alert('🎧 ÉCOUTE : '+b.t+' - En train de lire à voix haute...'); try{ let u=new SpeechSynthesisUtterance(b.t+'. '+b.c); u.lang='fr-FR'; speechSynthesis.speak(u); }catch(e){} }
+updateUI(); loadPosts(); loadChats(); loadBingo(); selectPay(500);
+</script>
+</body>
+</html>
